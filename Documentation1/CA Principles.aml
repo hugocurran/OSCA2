@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d137d8dc-1c9d-4e6a-8148-510c97712eea" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+
+      <para>
+        This short tutorial explains the basics of how OSCA works and explains some of the features.
+      </para>
+    </introduction>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    <sections>
+      <section address="Section1">
+        <title>Basic Principles</title>
+        <content>
+          <para>
+            The first step in using OSCA is to create a CA:
+            </para>
+          <para>
+            OSCA supports Root (self-signed) CA and Subordinate CA types.  A Subordinate CA may have its certificate signed by another OSCA CA instance
+            (this must exist within the same execution context, as the instance is passed into the factory).  Alternatively, the factory will
+            generate a PKCS #10 request that can be passed to any other CA for processing; subsequently the creation process is completed by
+            supplying the CA certificate.
+          </para>
+          <para>
+            Creation of an OSCA CA results in the production of a CA configuration file and a CA database file.  These are both XML files, and stored
+            in a CA directory that is specified when the CA is created.  These files are signed by the CA to protect them from accidental or deliberate
+            modification or tampering.
+          </para>
+          <para>
+            Once a CA has been created, it may be instantiated (‘started’) by specifying the CA configuration file and a password to decrypt/access the
+            key material.
+          </para>
+          <para>
+            The CA instance supports a variety of methods to retrieve status information (e.g. last certificate or CRL serial number) as well as methods
+            that perform fundamental CA functions:
+          </para>
+          <list class="bullet">
+            <listItem>
+              <para>
+                Issue a certificate
+              </para>
+            </listItem>
+            <listItem>
+              <para>
+                Revoke a certificate
+              </para>
+            </listItem>
+            <listItem>
+              <para>
+                Issue a CRL
+              </para>
+            </listItem>
+            <listItem>
+              <para>
+                Get current CRL
+              </para>
+            </listItem>
+          </list>
+          <para>
+            The CA may be ‘stopped’ by deleting the instance.
+          </para>
+        </content>
+      </section>
+      <section address="Section2">
+        <title>CA Configuration File</title>
+        <content>
+          <para>
+            OSCA configuration is stored in a CA configuration file (CAConfig.xml).  This file is read when the CA object is instantiated and provides
+            the CA with basic information about its operating environment, as well as operating parameters such as the serial number of the last
+            certificate and CRL created.
+          </para>
+          <para>
+            To protect from tampering (e.g., interfering with serial numbers) the configuration file is signed using an XML signature.
+          </para>
+        </content>
+      </section>
+      <section address="Section3">
+        <title>Profiles</title>
+        <content>
+          <para>
+            When a certificate is issued, the caller has the option of using the certificate extensions specification that is contained in the request, 
+            or alternatively specifying the certificate format by use of an OSCA Profile.  The purpose of an OSCA Profile is to provide a certificate 
+            template that defines the existence, and content, of X.509 extensions.
+          </para>
+          <para>
+            When an OSCA Profile is used, all of the content of the certificate request is ignored, apart from the public key and naming information:
+          </para>
+          <list class="bullet">
+            <listItem>The Subject field from the request is used verbatim.</listItem>
+            <listItem>If the subjectAlternativeName extension is present, then this will be used verbatim.</listItem>
+          </list>
+          <para>
+            OSCA Profiles are stored in XML files, within the CA directory structure.  They can be created manually (by use of a text editor) or 
+            programmatically via the API.  In the latter case, they may be created from an existing extension (e.g. from an existing certificate), 
+            or alternatively by specifying the values using the API.
+          </para>
+          <para>
+            The profiles mechanism is designed for use in a variety of scenarios.  For example, the API includes a generic PKCS#10 parser that 
+            can be used to interpret extensions contained in a certificate request, to allow analysis by an RA function.  Alternatively, it is 
+            possible to create a PKCS#10 request file containing the fields (including extensions) contained in a profile:  The resultant request 
+            could then be processed by any CA that handles PKCS#10 requests – including OSCA itself.
+          </para>
+          <para>
+            Whilst OSCA consumes profiles, and the library functions that support profiles can be used to create them programmatically, some form of 
+            user interface is required to create and edit profiles.  The OSCAmmc GUI provides a simple example of this process.
+          </para>
+        </content>
+      </section>
+      <section address="Section4">
+        <title>FIPS Mode vs BC Mode</title>
+        <content>
+          <para>
+            When a CA is created the cryptographic library is specified.  The options are to use the Bouncy Castle crypto library (FIPS140 = false) or 
+            the .Net (System.Security.Cryptography) crypto library (FIPS140 = true).  There are pros and cons to both approaches.
+          </para>
+          <section address="Section4.1">
+            <title>Bouncy Castle Crypto</title>
+            <content>
+              <para>
+                The Bouncy Castle crypto library is implemented in C#, and it is relatively slow (particularly for public key operations) compared to the 
+                System crypto libraries.  Whilst the BC library offers comprehensive functionality (far more so than the System library), there are security 
+                concerns over the protection of key material – all of which is held in the process memory and could be accessed readily with a debugger or 
+                via a memory dump.
+              </para>
+              <para>
+                From the viewpoint of OSCA, the main benefit gained from the BC library is that it provides true portability of OSCA CAs.  The CA key 
+                (and certificate) is held in an encrypted PKCS#12 object that is stored within the CA configuration file – an XML file.  Simply copying 
+                the CA directory structure, with its files, provides a complete backup of the CA that can be readily moved between computers.
+              </para>
+            </content>            
+          </section>
+          <section address="Section4.2">
+            <title>System Crypto</title>
+            <content>
+              <para>
+                The System crypto libraries (System.Security.Cryptography) are managed code wrappers around the underlying operating system FIPS 140 validated 
+                cryptographic module.  For Windows 7/2008 this validation is against FIPS 140-2.  OSCA is designed to use the System crypto in a manner that is 
+                within the FIPS 140 security target – as such it can claim to be a ‘FIPS 140 System’.  In the future it is intended to expand the CSP support to 
+                include HSMs and smartcards (either via their PKCS#11 cryptoki library, or using the native CAPI).
+              </para>
+              <para>
+                The main disadvantage of using the System crypto is that key material is stored in a container that belongs to the user.  This means that backups, 
+                and general portability, is constrained as the key material has to be exported in an encrypted form (to comply with the FIPS 140 requirements) and 
+                imported if the system is moved to a different computer, or user.  To enable this, the fipsCA implementation supports exporting/importing of PKCS#12 
+                files – but the key has to be exported to memory to allow its incorporation into the PKCS#12 file (hence, there is a risk to the key material).
+              </para>
+            </content>
+          </section>
+        </content>
+      </section>
+      <section address="Section5">
+        <title>Database</title>
+        <content>
+          <para>
+            OSCA uses a simple XML-based database (CADatabase.xml) to hold information about certificates, and their revocation status.  This provides a basic audit 
+            function (in that the details of each certificate creation – date/time, profile used, original request, etc. are captured) but is used by OSCA for the 
+            creation of CRLS.  Each certificate issued has an entry in the database; the entry includes the ‘revocation status’ of the certificate – either current, 
+            expired or revoked.  Revoked certificates have the date/time of revocation and the revocation reason recorded in the database.  When creating a CRL, 
+            OSCA simply iterates through the database and creates a CRL entry for each revoked certificate (unless the original certificate has expired).
+          </para>
+          <para>
+            To protect from tampering (e.g., resetting the status of a revoked certificate) the database is signed using an XML signature.
+          </para>
+        </content>
+      </section>
+      <section address="Section6">
+        <title>Logging</title>
+        <content>
+          <para>
+            In addition to the audit information embedded in the database entries, OSCA also maintains a log (CALog.xml) of significant events (‘starting/stopping’ 
+            the CA, certificate issuance, CRL creation, etc.).  A simple command line audit tool is provided (OSCAaudit) that creates a basic audit report – this 
+            can either provide the life history of a single certificate, or all certificates.
+          </para>
+          <para>
+            To protect from tampering (e.g., modifying or deleting log entries) the logfile is signed using an XML signature.
+          </para>
+        </content>
+      </section>
+    </sections>
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

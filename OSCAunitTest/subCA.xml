@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<OSCA version="1.0">
+  <Profile>
+    <name>subCA</name>
+    <version>1.0</version>
+    <description>Subordinate CA</description>
+    <lifetime units="Years">1</lifetime>
+    <Extensions>
+      <Extension>
+        <name displayName="Basic Constraints">BasicConstraints</name>
+        <critical>True</critical>
+        <value>
+          <ca>True</ca>
+          <pathLen>none</pathLen>
+        </value>
+      </Extension>
+      <Extension>
+        <name displayName="Certificate Policies">CertificatePolicies</name>
+        <critical>False</critical>
+        <value>
+          <policyInfo>
+            <oid>1.2.826.0.1310.100.1.3.1</oid>
+            <cps></cps>
+            <unotice></unotice>
+            <name>MediumHard</name>
+          </policyInfo>
+        </value>
+      </Extension>
+      <Extension>
+        <name displayName="Key Usage">KeyUsage</name>
+        <critical>True</critical>
+        <value>
+          <usage>DigitalSignature</usage>
+          <usage>CRLSign</usage>
+        </value>
+      </Extension>
+    </Extensions>
+  </Profile>
+</OSCA>

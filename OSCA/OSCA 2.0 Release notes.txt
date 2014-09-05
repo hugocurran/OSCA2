@@ -1,0 +1,37 @@
+OSCA 2.1.x.x -- RELEASE NOTES
+====================================
+
+OSCA CAConfig (BC Crypto) version 3.0
+OSCA CAConfig (System Cryptto) version 3.1
+OSCA CADatabase version 1.0
+OSCA CALog (BC Cryto) version 2.0
+OSCA CALog (System Crypto) version 2.1
+
+Crypto.DLL version 1.7.4818.40662
+
+Version 2.1.*
+=============
++ Changed the way CAs are instanced to simplify(!) things
+	+ Update CA config to ver 3.x
+	+ Added backward compatibility so that ver 2.x config files use old simpleCA/fipsCA
+	+ Added new CA structure and defined bcCA, sysCA and dhTA CA types (all use V3.x config)
+	+ Simplified CA inheritance to make it easier to add CA types in future
+	+ Fixed numerous bugs
+
+Version 2.0.????? - changes
+===========================
++ Added new element in policy files (renewOverlapPeriod) to support new renew/rekey feature
++ Implement certificate rekey feature
+
+Version 2.0.4820.27137 - changes
+=========================
++ Added in a check to expire old certificates each time the CA starts
++ Fixed bug in CAFactory whereby the CALog file was not signed in some circumstances (subCA using external CA for signing).
+
+Version 2.0.0.0 - changes
+=========================
++ Implemented XML signing for CAConfig.xml, CADatabase.xml and CALog.xml
++ Implemented logging function
++ Re-implement FIPS mode so that all crypto operations are performed in the system FIPS 140-2 module
+	- Including hashing operations
++ Numerous bug fixes across the Profile system following unit testing

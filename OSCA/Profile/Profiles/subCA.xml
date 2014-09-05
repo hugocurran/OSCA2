@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Generic subCA profile-->
+<OSCA version="1.0">
+  <Profile>
+    <name>subCA</name>
+    <version>1.0</version>
+    <lifetime units="Years">1</lifetime>
+    <Extensions>
+      <Extension>
+        <name>BasicConstraints</name>
+        <critical>true</critical>
+        <value>
+          <ca>true</ca>
+          <pathLen>none</pathLen>
+        </value>
+      </Extension>
+      <Extension>
+        <name>CertificatePolicies</name>
+        <critical>false</critical>
+        <value>
+          <policyID>
+            <oid>1.2.3.4</oid>
+            <cps>http://foo.bar.com/cps.html</cps>
+            <unotice></unotice>
+          </policyID>
+          <policyID>
+            <oid>1.2.3.5</oid>
+            <cps>http://foo.bar.com/cps.html</cps>
+            <unotice></unotice>
+          </policyID>
+        </value>
+      </Extension>
+      <Extension>
+        <name>KeyUsage</name>
+        <critical>true</critical>
+        <value>KeyCertSign|CrlSign</value>
+        <params/>
+      </Extension>
+    </Extensions>
+  </Profile>
+</OSCA>

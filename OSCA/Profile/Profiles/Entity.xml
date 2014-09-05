@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Generic subCA profile-->
+<OSCA version="1.0">
+  <Profile>
+    <name>Entity</name>
+    <version>1.0</version>
+    <lifetime units="Years">1</lifetime>
+    <Extensions>
+      <Extension>
+        <name>BasicConstraints</name>
+        <critical>false</critical>
+        <value>
+          <ca>false</ca>
+          <pathLen>none</pathLen>
+        </value>
+      </Extension>
+      <Extension>
+        <name>KeyUsage</name>
+        <critical>true</critical>
+        <value>DigitalSignature</value>
+      </Extension>
+      <Extension>
+        <name>ExtendedKeyUsage</name>
+        <critical>false</critical>
+        <value>
+          <eku>ClientAuth</eku>
+        </value>
+      </Extension>
+      <Extension>
+        <name>CrlDistributionPoints</name>
+        <critical>false</critical>
+        <value>
+          <cdp type="uniformResourceIdentifier">http://foo.bar.com/thisCA.crl</cdp>
+        </value>
+      </Extension>
+      <Extension>
+        <name>SubjectAlternativeName</name>
+        <value>
+          <critical>false</critical>
+          <san type="rfc822Name">foo@bar.com</san>
+          <san type="directoryName">cn=foo</san>
+        </value>
+      </Extension>
+    </Extensions>
+  </Profile>
+</OSCA>

@@ -1,0 +1,490 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DAFD3D7B-4769-49AE-9A41-36A470CA4DED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OSCASnapin</RootNamespace>
+    <AssemblyName>OSCASnapin</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\OSCASnapin.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\black_server.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\OSCASnapin.XML</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="microsoft.managementconsole, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Reference Assemblies\Microsoft\mmc\v3.0\microsoft.managementconsole.dll</HintPath>
+    </Reference>
+    <Reference Include="mmcfxcommon, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Reference Assemblies\Microsoft\mmc\v3.0\mmcfxcommon.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddCA\AddCA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddCA\AddCA.Designer.cs">
+      <DependentUpon>AddCA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddCA\ImportCAKey.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddCA\ImportCAKey.Designer.cs">
+      <DependentUpon>ImportCAKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AdminNode.cs" />
+    <Compile Include="Admin\AdminPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\AdminPassword.Designer.cs">
+      <DependentUpon>AdminPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AdminProperties.cs" />
+    <Compile Include="CAInfo\caDB.cs" />
+    <Compile Include="CAInfo\CAinfo.cs" />
+    <Compile Include="CAInfo\CApassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CAInfo\CApassword.Designer.cs">
+      <DependentUpon>CApassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CAInfo\ExportCAKey.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CAInfo\ExportCAKey.Designer.cs">
+      <DependentUpon>ExportCAKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CertListView.cs" />
+    <Compile Include="Admin\ChangeAdminPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\ChangeAdminPassword.Designer.cs">
+      <DependentUpon>ChangeAdminPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigManager\CAPropertiesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ConfigManager\CAPropertiesControl.Designer.cs">
+      <DependentUpon>CAPropertiesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigManager\CAPropertyPage.cs" />
+    <Compile Include="OSCA Properties\OSCAPropertyPage.cs" />
+    <Compile Include="OSCA Properties\OSCAPropertiesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OSCA Properties\OSCAPropertiesControl.Designer.cs">
+      <DependentUpon>OSCAPropertiesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CreateCA\Setpassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateCA\Setpassword.Designer.cs">
+      <DependentUpon>Setpassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CreateCA\CreateCA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateCA\CreateCA.Designer.cs">
+      <DependentUpon>CreateCA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigManager\InitialisationData.cs" />
+    <Compile Include="ConfigManager\Password.cs" />
+    <Compile Include="OSCA Properties\RekeyCert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OSCA Properties\RekeyCert.Designer.cs">
+      <DependentUpon>RekeyCert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\AuthorityInfoAccess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\AuthorityInfoAccess.Designer.cs">
+      <DependentUpon>AuthorityInfoAccess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\BasicConstraints.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\BasicConstraints.Designer.cs">
+      <DependentUpon>BasicConstraints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\CertificatePolicies.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\CertificatePolicies.Designer.cs">
+      <DependentUpon>CertificatePolicies.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\CreateProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\CreateProfile.Designer.cs">
+      <DependentUpon>CreateProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Installer\InitialisationWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Installer\InitialisationWizard.Designer.cs">
+      <DependentUpon>InitialisationWizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\CrlDistributionPoint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\CrlDistributionPoint.Designer.cs">
+      <DependentUpon>CrlDistributionPoint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\EditProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\EditProfile.Designer.cs">
+      <DependentUpon>EditProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\ExtendedKeyUsage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\ExtendedKeyUsage.Designer.cs">
+      <DependentUpon>ExtendedKeyUsage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\GetName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\GetName.Designer.cs">
+      <DependentUpon>GetName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\GetPolicy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\GetPolicy.Designer.cs">
+      <DependentUpon>GetPolicy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\GetPolicyShort.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\GetPolicyShort.Designer.cs">
+      <DependentUpon>GetPolicyShort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\InhibitAnyPolicy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\InhibitAnyPolicy.Designer.cs">
+      <DependentUpon>InhibitAnyPolicy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\IssuerAltNames.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\IssuerAltNames.Designer.cs">
+      <DependentUpon>IssuerAltNames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\KeyUsage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\KeyUsage.Designer.cs">
+      <DependentUpon>KeyUsage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\NameConstraints.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\NameConstraints.Designer.cs">
+      <DependentUpon>NameConstraints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\OcspNocheck.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\OcspNocheck.Designer.cs">
+      <DependentUpon>OcspNocheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\PolicyConstraints.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\PolicyConstraints.Designer.cs">
+      <DependentUpon>PolicyConstraints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\PolicyMappings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\PolicyMappings.Designer.cs">
+      <DependentUpon>PolicyMappings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\ProfileEditor.cs" />
+    <Compile Include="Profiles\SubjectInfoAccess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\SubjectInfoAccess.Designer.cs">
+      <DependentUpon>SubjectInfoAccess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\ViewXml.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\ViewXml.Designer.cs">
+      <DependentUpon>ViewXml.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Revocation\CRLsave.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Revocation\CRLsave.Designer.cs">
+      <DependentUpon>CRLsave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IssueCerts\CertSave.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IssueCerts\CertSave.Designer.cs">
+      <DependentUpon>CertSave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigManager\CA.cs" />
+    <Compile Include="ConfigManager\Configuration.cs" />
+    <Compile Include="Installer\Installer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CANode.cs" />
+    <Compile Include="IssueCerts\IssCert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IssueCerts\IssCert.Designer.cs">
+      <DependentUpon>IssCert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CAInfo\ProfileDB.cs" />
+    <Compile Include="ProfilesNode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CertsNode.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Revocation\revokeCert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Revocation\revokeCert.Designer.cs">
+      <DependentUpon>revokeCert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RootNode.cs" />
+    <Compile Include="Profiles\SubjectAltNames.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Profiles\SubjectAltNames.Designer.cs">
+      <DependentUpon>SubjectAltNames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\SelectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Admin\SelectionControl.Designer.cs">
+      <DependentUpon>SelectionControl.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AddCA\AddCA.resx">
+      <DependentUpon>AddCA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddCA\ImportCAKey.resx">
+      <DependentUpon>ImportCAKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\AdminPassword.resx">
+      <DependentUpon>AdminPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CAInfo\CApassword.resx">
+      <DependentUpon>CApassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CAInfo\ExportCAKey.resx">
+      <DependentUpon>ExportCAKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\ChangeAdminPassword.resx">
+      <DependentUpon>ChangeAdminPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigManager\CAPropertiesControl.resx">
+      <DependentUpon>CAPropertiesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OSCA Properties\OSCAPropertiesControl.resx">
+      <DependentUpon>OSCAPropertiesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateCA\Setpassword.resx">
+      <DependentUpon>Setpassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateCA\CreateCA.resx">
+      <DependentUpon>CreateCA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OSCA Properties\RekeyCert.resx">
+      <DependentUpon>RekeyCert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\AuthorityInfoAccess.resx">
+      <DependentUpon>AuthorityInfoAccess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\BasicConstraints.resx">
+      <DependentUpon>BasicConstraints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\CertificatePolicies.resx">
+      <DependentUpon>CertificatePolicies.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\CreateProfile.resx">
+      <DependentUpon>CreateProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Installer\InitialisationWizard.resx">
+      <DependentUpon>InitialisationWizard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\CrlDistributionPoint.resx">
+      <DependentUpon>CrlDistributionPoint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\EditProfile.resx">
+      <DependentUpon>EditProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\ExtendedKeyUsage.resx">
+      <DependentUpon>ExtendedKeyUsage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\GetName.resx">
+      <DependentUpon>GetName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\GetPolicy.resx">
+      <DependentUpon>GetPolicy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\GetPolicyShort.resx">
+      <DependentUpon>GetPolicyShort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\InhibitAnyPolicy.resx">
+      <DependentUpon>InhibitAnyPolicy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\IssuerAltNames.resx">
+      <DependentUpon>IssuerAltNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\KeyUsage.resx">
+      <DependentUpon>KeyUsage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\NameConstraints.resx">
+      <DependentUpon>NameConstraints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\OcspNocheck.resx">
+      <DependentUpon>OcspNocheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\PolicyConstraints.resx">
+      <DependentUpon>PolicyConstraints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\PolicyMappings.resx">
+      <DependentUpon>PolicyMappings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\SubjectAltNames.resx">
+      <DependentUpon>SubjectAltNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\SubjectInfoAccess.resx">
+      <DependentUpon>SubjectInfoAccess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Profiles\ViewXml.resx">
+      <DependentUpon>ViewXml.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Revocation\CRLsave.resx">
+      <DependentUpon>CRLsave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IssueCerts\CertSave.resx">
+      <DependentUpon>CertSave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IssueCerts\IssCert.resx">
+      <DependentUpon>IssCert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Revocation\revokeCert.resx">
+      <DependentUpon>revokeCert.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.manifest" />
+    <None Include="Properties\DataSources\caInfo.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\black_server.ico" />
+    <None Include="Properties\DataSources\OSCA.Profile.crlDistPoint.datasource" />
+    <None Include="Properties\DataSources\OSCASnapin.Profiles.CrlDistributionPoint.datasource" />
+    <None Include="Resources\Tasks.ico" />
+    <None Include="Resources\crl_sml.ico" />
+    <None Include="Resources\certificate_sml.ico" />
+    <Content Include="Resources\disable_server.ico" />
+    <Content Include="Resources\enable_server.ico" />
+    <None Include="Resources\folder.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\bccrypto-net-1.7\crypto\crypto.csproj">
+      <Project>{38872A5F-E87E-4FAD-B109-8EB7B2E6A4A0}</Project>
+      <Name>crypto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OSCA\OSCA.csproj">
+      <Project>{3BA89359-A619-4C70-AA45-9FF6C3203855}</Project>
+      <Name>OSCA</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

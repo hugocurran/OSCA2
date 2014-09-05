@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="54e70ac6-6831-47c5-9ec7-88250e4a5f34" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+
+      <para>Background to the development of OSCA</para>
+    </introduction>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    <section address="Section1">
+      <title>Project Background</title>
+      <content>
+        <para>
+          I have worked in the field of PKI management for a number of years, over that time I have become increasingly frustrated by many of the
+          PKI products that I have worked with.  Two key areas have annoyed me enough to develop OSCA:
+        </para>
+        <list class="ordered">
+          <listItem>
+            <para>
+              There is no easy CA system that truly supports an off-line Root CA – most require a complicated directory and/or database setup that is
+              an administrative (and reliability) pain, with no obvious benefit.  A Root CA will typically only ever issue a handful of certificates
+              in its lifetime – mostly it is used to issue CRLs:  I don’t need a complex database to hold this information.  For security, it is
+              preferable that a Root CA is offline:  I don’t need a complex directory service that no one can ever access – I don’t want to make
+              the CA online just so that I can publish CRLs to an enterprise or system directory.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              There are many circumstances when I want to maintain a simple certificate-issuing service to support a closed community, for example
+              SSL/TLS certificates for all the switches and routers in my network.  Do I really need the overhead of a full blown PKI, or full
+              blown CA products to do this?  In many cases, the ‘cut-down’ versions of products like Microsoft’s ADCS (i.e. operating in
+              stand-alone mode) do not give me the flexibility of defining the certificate profiles that I want, or simply do not support
+              the class of certificates that I want to issue (e.g. IPsec authentication certificates).
+            </para>
+          </listItem>
+        </list>
+        <para>
+          The Offline Simple CA (OSCA) is my answer to these two requirements.  It is made possible by the excellent Bouncy Castle cryptographic
+          library and its comprehensive support for ASN.1, as well as numerous tools for creating X.509 certificates and CRLs – not to mention
+          tools for working with PKCS standards.  OSCA is written in C#, using the Microsoft Visual Studio 2010 IDE, and is targeted on Windows
+          systems (but will probably work with Mono).
+        </para>
+        <para>
+          The OSCA system is delivered as a class library (DLL).  You need to provide your own user interface, but the basic OSCAcli.exe provides
+          a sample implementation of a command line system that uses OSCA.  (You may also be interested in OSCAmmc, which provides a turn-key CA
+          solution as an MMC v3.0 snap-in).
+        </para>
+      </content>
+    </section>
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

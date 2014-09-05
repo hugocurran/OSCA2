@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<Title>OSCA - The Offline Simple CA</Title>
+</HEAD>
+<BODY>
+<h1>Welcome to OSCA 2.0</h1>
+<h2>Introduction</h2>
+<p>OSCA - The Offline Simple CA - is a simple CA that provides a flexible (and fully configuable) root CA environment for use in any environment where an offline root CA is required.  Its main features are:</p>
+<ul>
+<li>Runs on any windows platform with support for .Net 3.5 SP1 or later</li>
+<li>The GUI frontend uses MMC 3.0 and installs as a 32-bit snapin</li>
+<li>It can be used with its own built-in crypto library (courtesy of Bouncy Castle) or with the .Net System.Security.Cryptography library</li>
+<li>It supports X.509v1 (for the root CA) and X.509v3 certificate generation</li>
+<li>You can specify the profile of any certificate you want to produce - or simply accept the defaults in the CSR</li>
+<li>Certificates can be revoked with the results published in a X.509v2 CRL</li>
+<li>A full audit trail of all CA actions is created</li>
+<li>OSCA can be used from any .Net application (or Powershell v2.0) as it is a stand-alone .DLL; alternatively you can use it in conjunction with the GUI</li>
+<li>There are a number of bundled classes to create and manipulate 'profile' files that are used to parse certificates and certificate requests</li>
+</ul>
+<p>Although OSCA 2.0 is designed primarily to act as a root CA, you can use it as a subordinate CA as well.  However, in this version, OSCA does have some limitations for this purpose.  OSCA 3.0, currently in development, is being designed to act as a subordinate CA</p>
+<h2>Warning!</h2>
+<p>OSCA is intended for use by people who have a reasonable understanding of how PKI works.  In particular:</p>
+<ul>
+<li>OSCA will not stop you from doing silly things with the crypto (e,g, selecting an inappropriate key size)</li>
+<li>OSCA will not stop you from creating certificate extensions with meaningless content, or using certificate extensions in the wrong place</li>
+<li>OSCA will not stop you from revoking the wrong certificate</li>
+</ul>
+However, if you do know what you are doing, you should find that OSCA offers a degree of flexibility that is simply unattainable in other CA systems (such as Entrust or ADCS) - not surprising as OSCA was developed because of frustration with the inflexibility of these systems to act as a true offline root CA.</p>
+
+</BODY>
+</HTML>

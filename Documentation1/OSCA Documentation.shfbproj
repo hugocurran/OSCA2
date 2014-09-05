@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8cd88114-c3e8-422e-b6f8-20ccea5fb273}</ProjectGuid>
+    <SHFBSchemaVersion>1.9.5.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>Documentation1</AssemblyName>
+    <RootNamespace>Documentation1</RootNamespace>
+    <Name>OSCA Documentation</Name>
+    <!-- SHFB properties -->
+    <FrameworkVersion>.NET Framework 3.5</FrameworkVersion>
+    <OutputPath>.\Help\</OutputPath>
+    <HtmlHelpName>OSCA API</HtmlHelpName>
+    <Language>en-US</Language>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\OSCA\OSCA.csproj" />
+    </DocumentationSources>
+    <SyntaxFilters>CSharp</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <PresentationStyle>VS2010</PresentationStyle>
+    <Preliminary>False</Preliminary>
+    <NamingMethod>MemberName</NamingMethod>
+    <HelpTitle>OSCA - Offline Simple CA API</HelpTitle>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <VisibleItems>ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers</VisibleItems>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="OSCA" isDocumented="True">OSCA is primarily a Certification Authority, but the OSCA namespace includes a number of functions that can be used to manipulate certificates and requests for certificates</NamespaceSummaryItem>
+<NamespaceSummaryItem name="OSCA.Profile" isDocumented="True">The OSCA profile system is a general purpose library for manipulating X.509 extensions.and OSCA profiles</NamespaceSummaryItem>
+<NamespaceSummaryItem name="OSCA.Crypto" isDocumented="True">OSCA extensions to the Bouncy Castle crypto classes</NamespaceSummaryItem>
+<NamespaceSummaryItem name="OSCA.Crypto.X509" isDocumented="True">OSCA extensions to the Bouncy Castle X509 classes</NamespaceSummaryItem>
+<NamespaceSummaryItem name="OSCA.Log" isDocumented="True">OSCA logging classes</NamespaceSummaryItem>
+<NamespaceSummaryItem name="OSCA.Offline" isDocumented="True">This namespace contains the CA</NamespaceSummaryItem>
+<NamespaceSummaryItem name="OSCA.Policy" isDocumented="False" /></NamespaceSummaries>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <HelpFileFormat>HtmlHelp1, MSHelpViewer</HelpFileFormat>
+    <IndentHtml>False</IndentHtml>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <CleanIntermediates>True</CleanIntermediates>
+    <FooterText>
+    </FooterText>
+    <FeedbackEMailAddress>peter%40currans.eu</FeedbackEMailAddress>
+    <CopyrightText>Copyright 2011-2013 Peter Curran %28peter%40currans.eu%29. All rights reserved.</CopyrightText>
+    <ProjectSummary>OSCA is a CLR-compatible DLL that provides a class library, which supports the creation and operation of a CA.  The key features/limitations of the CA are:
+&amp;lt%3bul&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bSupports self-signed CA creation.&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bSupports subordinated CA creation %28generates a PKCS#10 request%29.&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bul&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bCurrently, there is limited support for imposing policies on subordinate CAs.&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3b/ul&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bUses the Bouncy Castle crypto library for all cryptographic functions by default.&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bOptionally, operation in a FIPS 140-2 compatible mode is provided by using the .Net %28system%29 libraries for key storage and cryptographic functions.&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bul&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bWork is underway to add support for cryptographic hardware %28e.g., HSMs and smartcards%29 that offer a PKCS#11 interface.&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3b/ul&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bAccepts certificate requests as PKCS#10 only.&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bOptional profile function supports full definition for certificate profiles.&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bCRLs are created on demand.&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3bul&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bThere is no automated CRL creation within the library.&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3b/ul&amp;gt%3b
+&amp;lt%3bli&amp;gt%3bDatabase and CA configuration use signed XML files.&amp;lt%3b/li&amp;gt%3b
+&amp;lt%3b/ul&amp;gt%3b
+OSCA can be viewed as a core CA function with a number of support functions that can be used for a variety of purposes, either directly relating to CA operation, or to allow the creation of utilities %28such as PKCS#10 request generators and parsers%29.
+</ProjectSummary>
+  </PropertyGroup>
+  <!-- There are no properties for these groups.  AnyCPU needs to appear in
+       order for Visual Studio to perform the build.  The others are optional
+       common platform types that may appear. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\bccrypto-net-1.7\crypto\crypto.csproj">
+      <Name>crypto</Name>
+      <Project>{38872a5f-e87e-4fad-b109-8eb7b2e6a4a0}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ContentLayout Include="Content Layout1.content" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CA Principles.aml" />
+    <None Include="Conceptual1.aml" />
+    <None Include="Introduction.aml" />
+    <None Include="Licenses.aml" />
+    <None Include="OSCA CA Principles.aml" />
+    <None Include="OSCA Profiles.aml" />
+    <None Include="Profile.aml" />
+    <None Include="Project Background.aml" />
+  </ItemGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>

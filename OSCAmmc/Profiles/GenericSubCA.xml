@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<OSCA version="2.0">
+  <Profile>
+    <name>subCA</name>
+    <version>1.0</version>
+    <description>Generic Subordinate CA</description>
+    <lifetime units="Years">1</lifetime>
+    <Extensions>
+      <Extension>
+        <name displayName="Basic Constraints">BasicConstraints</name>
+        <critical>True</critical>
+        <value>
+          <ca>True</ca>
+          <pathLen>0</pathLen>
+        </value>
+      </Extension>
+      <Extension>
+        <name displayName="Key Usage">KeyUsage</name>
+        <critical>True</critical>
+        <value>
+          <usage>KeyCertSign</usage>
+          <usage>CRLSign</usage>
+        </value>
+      </Extension>
+    </Extensions>
+  </Profile>
+</OSCA>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--CA Database-->
+<OSCA version="1.0">
+  <record>
+    <dn>CN=Test Harness Sys</dn>
+    <serialNumber>12305273445076684552</serialNumber>
+    <profile>RootCA</profile>
+    <created>2013-02-12T23:08:27Z</created>
+    <expiry>2015-02-12T23:08:27Z</expiry>
+    <certificate>MIICHTCCAYagAwIBAgIJAKrFHQCN188IMA0GCSqGSIb3DQEBBQUAMBsxGTAXBgNVBAMMEFRlc3QgSGFybmVzcyBTeXMwHhcNMTMwMjEyMjMwODI3WhcNMTUwMjEyMjMwODI3WjAbMRkwFwYDVQQDDBBUZXN0IEhhcm5lc3MgU3lzMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDe3L7CRgPZ0Fb+lQnl4gRqTvVs+4GZEASi167jgRbbV3EHBLKBvG3SuvDo0OfOAcLSiZOAMnj/ZGuxFonaB69Ev1/fyrd6D5sm5i2aMK2K3aC7SVtD9blr9DNQtUmFdsamNAQRT6zHti68+C3UtQuXsFqpandS+6h6NQX2PokOmwIDAQABo2kwZzAiBgNVHSMBAf8EGDAWgBQSEh54tD9koHdlh9O2C4QSwhsbGDAgBgNVHQ4BAf8EFgQUEhIeeLQ/ZKB3ZYfTtguEEsIbGxgwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAQYwDQYJKoZIhvcNAQEFBQADgYEAugi4E6erAlWXztVrlHGKIovtEN3GWF2dUFfcND80CvlykTK/Ugj7+MIO8aHxkAa20XHziPgU0eDWGtvC3WZdvthJwRJhDSYqkPD2hVlPCYwwJgKayOWxC1NKaqbnvo8yHebyAYo8ek21C6qKQ41S3djB+SUmgBGNkgWsCx78aes=</certificate>
+    <request></request>
+    <revocation status="current">
+      <date>0</date>
+      <reason></reason>
+    </revocation>
+  </record>
+</OSCA>
