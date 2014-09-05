@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Generic xCert profile-->
+<OSCA version="1.0">
+  <Profile>
+    <name>xCert</name>
+    <version>1.0</version>
+    <lifetime units="Years">1</lifetime>
+    <Extensions>
+      <Extension>
+        <name>BasicConstraints</name>
+        <critical>true</critical>
+        <value>true</value>
+        <params name="PathLengthConstraint">3</params>
+      </Extension>
+      <Extension>
+        <name>KeyUsage</name>
+        <critical>true</critical>
+        <value>KeyCertSign|CrlSign</value>
+        <params/>
+      </Extension>
+      <Extension>
+        <name>PolicyConstraints</name>
+        <critical>true</critical>
+        <value/>
+        <params name="requireExplicitPolicy">0</params>
+        <params name="inhibitPolicyMapping">0</params>
+      </Extension>
+    </Extensions>
+  </Profile>
+</OSCA>
