@@ -109,6 +109,7 @@
     <Compile Include="Crypto\X509\MsCertTemplateInfo.cs" />
     <Compile Include="Crypto\X509\MsCertTemplateName.cs" />
     <Compile Include="Crypto\X509\MsPrevCaCertHash.cs" />
+    <Compile Include="Crypto\X509\X509Name.cs" />
     <Compile Include="Crypto\XMLSigning.cs" />
     <Compile Include="Crypto\Sys\SysCrlGen.cs" />
     <Compile Include="Crypto\Sys\SysV1CertGen.cs" />
@@ -208,6 +209,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Profile\ProfileClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\BC-Crypto\crypto\crypto.csproj">
+      <Project>{38872A5F-E87E-4FAD-B109-8EB7B2E6A4A0}</Project>
+      <Name>crypto</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
