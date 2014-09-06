@@ -44,6 +44,11 @@ namespace OSCASnapin.CAinfo
         public string status;
         public string revDate;
         public string revReason;
+
+        public override string ToString()
+        {
+            return dn;
+        }
     }
 
     /// <summary>

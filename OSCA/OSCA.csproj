@@ -109,7 +109,6 @@
     <Compile Include="Crypto\X509\MsCertTemplateInfo.cs" />
     <Compile Include="Crypto\X509\MsCertTemplateName.cs" />
     <Compile Include="Crypto\X509\MsPrevCaCertHash.cs" />
-    <Compile Include="Crypto\X509\X509Name.cs" />
     <Compile Include="Crypto\XMLSigning.cs" />
     <Compile Include="Crypto\Sys\SysCrlGen.cs" />
     <Compile Include="Crypto\Sys\SysV1CertGen.cs" />

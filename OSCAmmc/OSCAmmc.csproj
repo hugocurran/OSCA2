@@ -470,6 +470,10 @@
     <None Include="Resources\folder.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\BC-Crypto\crypto\crypto.csproj">
+      <Project>{38872A5F-E87E-4FAD-B109-8EB7B2E6A4A0}</Project>
+      <Name>crypto</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OSCA\OSCA.csproj">
       <Project>{3BA89359-A619-4C70-AA45-9FF6C3203855}</Project>
       <Name>OSCA</Name>
