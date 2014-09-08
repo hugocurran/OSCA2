@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OSCA</RootNamespace>
     <AssemblyName>OSCA</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -32,6 +32,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -85,6 +86,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
@@ -101,6 +103,9 @@
     <Compile Include="CrlReason.cs" />
     <Compile Include="Crypto\BC\BcKeyManager.cs" />
     <Compile Include="Crypto\BC\BcV1CertGen.cs" />
+    <Compile Include="Crypto\CNG\CngSigner.cs" />
+    <Compile Include="Crypto\CNG\CngKeyManager.cs" />
+    <Compile Include="Crypto\CNG\Rfc4050KeyFormatter.cs" />
     <Compile Include="Crypto\X509\CertificatePolicies.cs" />
     <Compile Include="Crypto\Pkcs7.cs" />
     <Compile Include="Crypto\Sys\SysCSP.cs" />
