@@ -5,10 +5,10 @@ using System.Text;
 
 namespace OSCA.Crypto
 {
-    class SysCSP
+    public class SysCSP
     {
         [DllImport("Advapi32.dll")]
-        internal static extern bool CryptEnumProviders(
+        private static extern bool CryptEnumProviders(
             int dwIndex,
             IntPtr pdwReserved,
             int dwFlags,

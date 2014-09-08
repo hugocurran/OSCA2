@@ -384,7 +384,7 @@ namespace OSCA.Offline
             if (XmlSigning.VerifyXmlFile(DbFileLocation))
                 db = XDocument.Load(DbFileLocation);
             else
-                throw new GeneralSecurityException("Signature failure on database file");
+                 throw new GeneralSecurityException("Signature failure on database file");
 
             // Find all certificates where revocation status is not expired
             var records = db.Element("OSCA").Descendants("record").Where(m => m.Element("revocation").Attribute("status").Value != "expired");
@@ -416,7 +416,7 @@ namespace OSCA.Offline
                     XmlSigning.SignXml(db, DbFileLocation, caCert, cspParam);
 
                 return expiredRecordsCount;
-            }
+        }
 
         #endregion
 

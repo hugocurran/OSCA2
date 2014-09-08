@@ -72,7 +72,12 @@ namespace OSCA.Offline
         /// <summary>
         /// DH Trust Anchor (System crypto, V1 certificates)
         /// </summary>
-        dhTA
+        dhTA,
+
+        /// <summary>
+        /// Experimental CNG CA (ECDSA)
+        /// </summary>
+        cngCA
     }
 
     /// <summary>

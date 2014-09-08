@@ -2199,6 +2199,80 @@
             A <see cref="T:System.String"/> that represents this instance.
             </returns>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:OSCA.Crypto.CNG.Rfc4050KeyFormatter" -->
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.FromXml(System.String)">
+            <summary>
+                Restore a key from XML
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.GetKeySize(System.String)">
+            <summary>
+                Map a curve URN to the size of the key associated with the curve
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.GetCurveUrn(System.Security.Cryptography.CngAlgorithm)">
+            <summary>
+                Get the OID which represents an elliptic curve
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.ReadAlgorithm(System.Xml.XPath.XPathNavigator)">
+            <summary>
+                Determine which ECC algorithm the key refers to
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.ReadPublicKey(System.Xml.XPath.XPathNavigator,System.Numerics.BigInteger@,System.Numerics.BigInteger@)">
+            <summary>
+                Read the x and y components of the public key
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.WriteDomainParameters(System.Xml.XmlWriter,System.Security.Cryptography.CngKey)">
+            <summary>
+                Serialize out information about the elliptic curve
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.ToXml(System.Security.Cryptography.CngKey)">
+            <summary>
+                Convert a key to XML
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.UnpackEccPublicBlob(System.Byte[],System.Numerics.BigInteger@,System.Numerics.BigInteger@)">
+            <summary>
+                Unpack a key blob in ECC public blob format into its X and Y parameters
+            
+                This method expects that the blob be in the correct format -- blobs accepted from partially
+                trusted code need to be validated before being unpacked.
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.ReverseBytes(System.Byte[])">
+            <summary>
+                Reverse the bytes in a buffer
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.ReverseBytes(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+                Reverse a section of bytes within a buffer
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.BuildEccPublicBlob(System.String,System.Numerics.BigInteger,System.Numerics.BigInteger)">
+            <summary>
+                Build an ECC public key blob to represent the given parameters
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.MapAlgorithmIdToMagic(System.String,OSCA.Crypto.CNG.Rfc4050KeyFormatter.KeyBlobMagicNumber@,System.Int32@)">
+            <summary>
+                Map an algorithm identifier to a key size and magic number
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.FillKeyParameter(System.Byte[],System.Int32)">
+            <summary>
+                Make sure that a key is padded out to be its full size
+            </summary>
+        </member>
+        <member name="T:OSCA.Crypto.CNG.Rfc4050KeyFormatter.KeyBlobMagicNumber">
+            <summary>
+                Magic numbers identifying blob types
+            </summary>
+        </member>
         <member name="T:OSCA.Profile.certTemplateInfo">
             <summary>
             Certificate Template Information extension (MS)
@@ -2412,14 +2486,9 @@
             CA Key number
             </summary>
         </member>
-        <member name="T:OSCA.Crypto.BcV1CertGen">
+        <member name="T:OSCA.Crypto.V3CertGen">
             <summary>
-            Class to Generate X509V1 Certificates using BC crypto
-            </summary>
-        </member>
-        <member name="T:OSCA.Crypto.V1CertGen">
-            <summary>
-            Abstract class used to derive all V1 certificate generators
+            Abstract base class for V3 certificate generators
             </summary>
         </member>
         <member name="T:OSCA.Crypto.ICertGen">
@@ -2482,6 +2551,203 @@
             Set the signature algorithm that will be used to sign this certificate.
             </summary>
             <param name="signatureAlgorithm"/>
+        </member>
+        <member name="F:OSCA.Crypto.V3CertGen.extGenerator">
+            <summary>
+            The extensions generator
+            </summary>
+        </member>
+        <member name="F:OSCA.Crypto.V3CertGen.tbsGen">
+            <summary>
+            The TBS gen
+            </summary>
+        </member>
+        <member name="F:OSCA.Crypto.V3CertGen.sigOid">
+            <summary>
+            The sig oid
+            </summary>
+        </member>
+        <member name="F:OSCA.Crypto.V3CertGen.sigAlgId">
+            <summary>
+            The sig alg identifier
+            </summary>
+        </member>
+        <member name="F:OSCA.Crypto.V3CertGen.signatureAlgorithm">
+            <summary>
+            The signature algorithm
+            </summary>
+        </member>
+        <member name="F:OSCA.Crypto.V3CertGen.policy">
+            <summary>
+            The policy
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.#ctor">
+            <summary>
+            Called by derived classes to initializes a new instance.
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.GetVersion">
+            <summary>
+            Return the X509 version this Certificate Generator will create.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.Reset">
+            <summary>
+            Reset the Generator.
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.SetSerialNumber(Org.BouncyCastle.Math.BigInteger)">
+            <summary>
+            Set the certificate's serial number.
+            </summary>
+            <remarks>Make serial numbers long, if you have no serial number policy make sure the number is at least 16 bytes of secure random data.
+            You will be surprised how ugly a serial number collision can get.</remarks>
+            <param name="serialNumber">The serial number.</param>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.SetIssuerDN(Org.BouncyCastle.Asn1.X509.X509Name)">
+            <summary>
+            Set the distinguished name of the issuer.
+            The issuer is the entity which is signing the certificate.
+            </summary>
+            <param name="issuer">The issuer's DN.</param>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.SetNotBefore(System.DateTime)">
+            <summary>
+            Set the date that this certificate is to be valid from.
+            </summary>
+            <param name="Date">From date</param>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.SetNotAfter(System.DateTime)">
+            <summary>
+            Set the date after which this certificate will no longer be valid.
+            </summary>
+            <param name="Date">Expiry date</param>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.SetSubjectDN(Org.BouncyCastle.Asn1.X509.X509Name)">
+            <summary>
+            Set the DN of the entity that this certificate is about.
+            </summary>
+            <param name="Subject">Subject name</param>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.SetPublicKey(Org.BouncyCastle.Crypto.AsymmetricKeyParameter)">
+            <summary>
+            Set the public key that this certificate identifies.
+            </summary>
+            <param name="publicKey"/>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.SetSignatureAlgorithm(System.String)">
+            <summary>
+            Set the signature algorithm that will be used to sign this certificate.
+            </summary>
+            <param name="signatureAlgorithm">Name of the signature algorithm</param>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.SetSubjectUniqueID(System.Boolean[])">
+            <summary>
+            Set the subject unique ID - note: it is very rare that it is correct to do this.
+            </summary>
+            <param name="uniqueID"/>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.SetIssuerUniqueID(System.Boolean[])">
+            <summary>
+            Set the issuer unique ID - note: it is very rare that it is correct to do this.
+            </summary>
+            <param name="uniqueID"/>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.AddExtension(System.String,System.Boolean,Org.BouncyCastle.Asn1.Asn1Encodable)">
+            <summary>
+            Add a given extension field for the standard extensions tag (tag 3).
+            </summary>
+            <param name="oid">string containing a dotted decimal Object Identifier.</param>
+            <param name="critical">Is it critical.</param>
+            <param name="extensionValue">The value.</param>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.AddExtension(Org.BouncyCastle.Asn1.DerObjectIdentifier,System.Boolean,Org.BouncyCastle.Asn1.Asn1Encodable)">
+            <summary>
+            Add an extension to this certificate.
+            </summary>
+            <param name="oid">Its Object Identifier.</param>
+            <param name="critical">Is it critical.</param>
+            <param name="extensionValue">The value.</param>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.AddExtension(System.String,System.Boolean,System.Byte[])">
+            <summary>
+            Add an extension using a string with a dotted decimal OID.
+            </summary>
+            <param name="oid">string containing a dotted decimal Object Identifier.</param>
+            <param name="critical">Is it critical.</param>
+            <param name="extensionValue">byte[] containing the value of this extension.</param>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.AddExtension(Org.BouncyCastle.Asn1.DerObjectIdentifier,System.Boolean,System.Byte[])">
+            <summary>
+            Add an extension to this certificate.
+            </summary>
+            <param name="oid">Its Object Identifier.</param>
+            <param name="critical">Is it critical.</param>
+            <param name="extensionValue">byte[] containing the value of this extension.</param>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.CopyAndAddExtension(System.String,System.Boolean,Org.BouncyCastle.X509.X509Certificate)">
+            <summary>
+            Add a given extension field for the standard extensions tag (tag 3),
+            copying the extension value from another certificate.
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.CopyAndAddExtension(Org.BouncyCastle.Asn1.DerObjectIdentifier,System.Boolean,Org.BouncyCastle.X509.X509Certificate)">
+            add a given extension field for the standard extensions tag (tag 3)
+            copying the extension value from another certificate.
+            @throws CertificateParsingException if the extension cannot be extracted.
+        </member>
+        <member name="M:OSCA.Crypto.V3CertGen.GenerateTbsCert(Org.BouncyCastle.Asn1.X509.X509Extensions)">
+            <summary>
+            Generates the TBS cert.
+            </summary>
+            <param name="Extensions">The extensions.</param>
+            <returns></returns>
+        </member>
+        <member name="P:OSCA.Crypto.V3CertGen.SignatureAlgNames">
+            <summary>
+            Allows enumeration of the signature names supported by the generator.
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.IbcCertGen.Generate(Org.BouncyCastle.Crypto.AsymmetricKeyParameter)">
+            <summary>
+            Generate an X509Certificate.
+            </summary>
+            <param name="privateKey">The private key of the issuer that is signing this certificate.</param>
+            <returns>An X509Certificate.</returns>
+        </member>
+        <member name="M:OSCA.Crypto.IbcCertGen.Generate(Org.BouncyCastle.Crypto.AsymmetricKeyParameter,Org.BouncyCastle.Asn1.X509.X509Extensions)">
+            <summary>
+            Generate an X509Certificate.
+            </summary>
+            <param name="privateKey">The private key of the issuer that is signing this certificate.</param>
+            <param name="Extensions">Set of extensions to include in the certificate.</param>
+            <returns>
+            An X509Certificate.
+            </returns>
+        </member>
+        <member name="M:OSCA.Crypto.IbcCertGen.Generate(Org.BouncyCastle.Crypto.AsymmetricKeyParameter,OSCA.Profile.Profile,System.DateTime,System.DateTime)">
+            <summary>
+            Generate an X509Certificate.
+            </summary>
+            <param name="privateKey">The private key of the issuer that is signing this certificate.</param>
+            <param name="Profile">OSCA profile.</param>
+            <param name="NotBefore">The notBefore date</param>
+            <param name="NotAfter">The notAfter date</param>
+            <returns>
+            An X509Certificate.
+            </returns>
+        </member>
+        <member name="T:OSCA.Crypto.BcV1CertGen">
+            <summary>
+            Class to Generate X509V1 Certificates using BC crypto
+            </summary>
+        </member>
+        <member name="T:OSCA.Crypto.V1CertGen">
+            <summary>
+            Abstract class used to derive all V1 certificate generators
+            </summary>
         </member>
         <member name="F:OSCA.Crypto.V1CertGen.tbsGen">
             <summary>
@@ -4243,198 +4509,6 @@
              </remarks>
             </summary>
         </member>
-        <member name="T:OSCA.Crypto.V3CertGen">
-            <summary>
-            Abstract base class for V3 certificate generators
-            </summary>
-        </member>
-        <member name="F:OSCA.Crypto.V3CertGen.extGenerator">
-            <summary>
-            The extensions generator
-            </summary>
-        </member>
-        <member name="F:OSCA.Crypto.V3CertGen.tbsGen">
-            <summary>
-            The TBS gen
-            </summary>
-        </member>
-        <member name="F:OSCA.Crypto.V3CertGen.sigOid">
-            <summary>
-            The sig oid
-            </summary>
-        </member>
-        <member name="F:OSCA.Crypto.V3CertGen.sigAlgId">
-            <summary>
-            The sig alg identifier
-            </summary>
-        </member>
-        <member name="F:OSCA.Crypto.V3CertGen.signatureAlgorithm">
-            <summary>
-            The signature algorithm
-            </summary>
-        </member>
-        <member name="F:OSCA.Crypto.V3CertGen.policy">
-            <summary>
-            The policy
-            </summary>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.#ctor">
-            <summary>
-            Called by derived classes to initializes a new instance.
-            </summary>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.GetVersion">
-            <summary>
-            Return the X509 version this Certificate Generator will create.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.Reset">
-            <summary>
-            Reset the Generator.
-            </summary>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.SetSerialNumber(Org.BouncyCastle.Math.BigInteger)">
-            <summary>
-            Set the certificate's serial number.
-            </summary>
-            <remarks>Make serial numbers long, if you have no serial number policy make sure the number is at least 16 bytes of secure random data.
-            You will be surprised how ugly a serial number collision can get.</remarks>
-            <param name="serialNumber">The serial number.</param>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.SetIssuerDN(Org.BouncyCastle.Asn1.X509.X509Name)">
-            <summary>
-            Set the distinguished name of the issuer.
-            The issuer is the entity which is signing the certificate.
-            </summary>
-            <param name="issuer">The issuer's DN.</param>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.SetNotBefore(System.DateTime)">
-            <summary>
-            Set the date that this certificate is to be valid from.
-            </summary>
-            <param name="Date">From date</param>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.SetNotAfter(System.DateTime)">
-            <summary>
-            Set the date after which this certificate will no longer be valid.
-            </summary>
-            <param name="Date">Expiry date</param>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.SetSubjectDN(Org.BouncyCastle.Asn1.X509.X509Name)">
-            <summary>
-            Set the DN of the entity that this certificate is about.
-            </summary>
-            <param name="Subject">Subject name</param>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.SetPublicKey(Org.BouncyCastle.Crypto.AsymmetricKeyParameter)">
-            <summary>
-            Set the public key that this certificate identifies.
-            </summary>
-            <param name="publicKey"/>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.SetSignatureAlgorithm(System.String)">
-            <summary>
-            Set the signature algorithm that will be used to sign this certificate.
-            </summary>
-            <param name="signatureAlgorithm">Name of the signature algorithm</param>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.SetSubjectUniqueID(System.Boolean[])">
-            <summary>
-            Set the subject unique ID - note: it is very rare that it is correct to do this.
-            </summary>
-            <param name="uniqueID"/>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.SetIssuerUniqueID(System.Boolean[])">
-            <summary>
-            Set the issuer unique ID - note: it is very rare that it is correct to do this.
-            </summary>
-            <param name="uniqueID"/>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.AddExtension(System.String,System.Boolean,Org.BouncyCastle.Asn1.Asn1Encodable)">
-            <summary>
-            Add a given extension field for the standard extensions tag (tag 3).
-            </summary>
-            <param name="oid">string containing a dotted decimal Object Identifier.</param>
-            <param name="critical">Is it critical.</param>
-            <param name="extensionValue">The value.</param>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.AddExtension(Org.BouncyCastle.Asn1.DerObjectIdentifier,System.Boolean,Org.BouncyCastle.Asn1.Asn1Encodable)">
-            <summary>
-            Add an extension to this certificate.
-            </summary>
-            <param name="oid">Its Object Identifier.</param>
-            <param name="critical">Is it critical.</param>
-            <param name="extensionValue">The value.</param>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.AddExtension(System.String,System.Boolean,System.Byte[])">
-            <summary>
-            Add an extension using a string with a dotted decimal OID.
-            </summary>
-            <param name="oid">string containing a dotted decimal Object Identifier.</param>
-            <param name="critical">Is it critical.</param>
-            <param name="extensionValue">byte[] containing the value of this extension.</param>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.AddExtension(Org.BouncyCastle.Asn1.DerObjectIdentifier,System.Boolean,System.Byte[])">
-            <summary>
-            Add an extension to this certificate.
-            </summary>
-            <param name="oid">Its Object Identifier.</param>
-            <param name="critical">Is it critical.</param>
-            <param name="extensionValue">byte[] containing the value of this extension.</param>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.CopyAndAddExtension(System.String,System.Boolean,Org.BouncyCastle.X509.X509Certificate)">
-            <summary>
-            Add a given extension field for the standard extensions tag (tag 3),
-            copying the extension value from another certificate.
-            </summary>
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.CopyAndAddExtension(Org.BouncyCastle.Asn1.DerObjectIdentifier,System.Boolean,Org.BouncyCastle.X509.X509Certificate)">
-            add a given extension field for the standard extensions tag (tag 3)
-            copying the extension value from another certificate.
-            @throws CertificateParsingException if the extension cannot be extracted.
-        </member>
-        <member name="M:OSCA.Crypto.V3CertGen.GenerateTbsCert(Org.BouncyCastle.Asn1.X509.X509Extensions)">
-            <summary>
-            Generates the TBS cert.
-            </summary>
-            <param name="Extensions">The extensions.</param>
-            <returns></returns>
-        </member>
-        <member name="P:OSCA.Crypto.V3CertGen.SignatureAlgNames">
-            <summary>
-            Allows enumeration of the signature names supported by the generator.
-            </summary>
-        </member>
-        <member name="M:OSCA.Crypto.IbcCertGen.Generate(Org.BouncyCastle.Crypto.AsymmetricKeyParameter)">
-            <summary>
-            Generate an X509Certificate.
-            </summary>
-            <param name="privateKey">The private key of the issuer that is signing this certificate.</param>
-            <returns>An X509Certificate.</returns>
-        </member>
-        <member name="M:OSCA.Crypto.IbcCertGen.Generate(Org.BouncyCastle.Crypto.AsymmetricKeyParameter,Org.BouncyCastle.Asn1.X509.X509Extensions)">
-            <summary>
-            Generate an X509Certificate.
-            </summary>
-            <param name="privateKey">The private key of the issuer that is signing this certificate.</param>
-            <param name="Extensions">Set of extensions to include in the certificate.</param>
-            <returns>
-            An X509Certificate.
-            </returns>
-        </member>
-        <member name="M:OSCA.Crypto.IbcCertGen.Generate(Org.BouncyCastle.Crypto.AsymmetricKeyParameter,OSCA.Profile.Profile,System.DateTime,System.DateTime)">
-            <summary>
-            Generate an X509Certificate.
-            </summary>
-            <param name="privateKey">The private key of the issuer that is signing this certificate.</param>
-            <param name="Profile">OSCA profile.</param>
-            <param name="NotBefore">The notBefore date</param>
-            <param name="NotAfter">The notAfter date</param>
-            <returns>
-            An X509Certificate.
-            </returns>
-        </member>
         <member name="M:OSCA.Crypto.BcV3CertGen.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:OSCA.Crypto.BcV3CertGen"/> class.
@@ -4665,6 +4739,37 @@
             <summary>
             
             </summary>
+        </member>
+        <member name="T:OSCA.Crypto.CNG.CngKeyManager">
+            <summary>
+            Class that manages keypairs using the system CNG crypto library
+            </summary>
+            <remarks>Only EC keypairs are supported</remarks>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.CngKeyManager.Create(System.Security.Cryptography.CngAlgorithm,System.String)">
+            <summary>
+            Create a CNG keypair
+            </summary>
+            <param name="pkAlgo">Key algorithm (from supported set)</param>
+            <param name="name">Key container name</param>
+            <returns>
+            CNG keypair
+            </returns>
+            <exception cref="T:System.NotSupportedException">Creation of key not supported for:  + pkAlgo.Algorithm</exception>
+            <remarks>
+            Keys are exportable
+            </remarks>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.CngKeyManager.ImportFromP12(System.Byte[],System.String,System.String,System.Char[])">
+            <summary>
+            Import key and certificate from a PKCS#12 file.
+            </summary>
+            <param name="P12">The PKCS#12 file</param>
+            <param name="pkAlgo">The public key algorithm</param>
+            <param name="name">The certificate name</param>
+            <param name="password">The decryption password</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException">Algorithm not supported</exception>
         </member>
         <member name="T:OSCA.Profile.NameConstraintTree">
             <summary>
@@ -5106,6 +5211,11 @@
         <member name="F:OSCA.Offline.CA_Type.dhTA">
             <summary>
             DH Trust Anchor (System crypto, V1 certificates)
+            </summary>
+        </member>
+        <member name="F:OSCA.Offline.CA_Type.cngCA">
+            <summary>
+            Experimental CNG CA (ECDSA)
             </summary>
         </member>
         <member name="T:OSCA.Offline.CA_Profile">
@@ -6328,6 +6438,152 @@
             <value>
             The minor version.
             </value>
+        </member>
+        <member name="M:OSCA.Crypto.IcngCertGen.Generate(System.Security.Cryptography.CngKey)">
+            <summary>
+            Generate an X509 Certificate
+            </summary>
+            <param name="key">Reference to signing key.</param>
+            <returns>
+            An X509 Certificate
+            </returns>
+        </member>
+        <member name="M:OSCA.Crypto.IcngCertGen.Generate(System.Security.Cryptography.CngKey,Org.BouncyCastle.Asn1.X509.X509Extensions)">
+            <summary>
+            Generate an X509Certificate.
+            </summary>
+            <param name="key">Reference to signing key.</param>
+            <param name="Extensions">Extensions to include in the certificate</param>
+            <returns>
+            An X509Certificate.
+            </returns>
+        </member>
+        <member name="M:OSCA.Crypto.IcngCertGen.Generate(System.Security.Cryptography.CngKey,OSCA.Profile.Profile,System.DateTime,System.DateTime)">
+            <summary>
+            Generate an X509Certificate.
+            </summary>
+            <param name="key">Reference to signing key.</param>
+            <param name="Profile">OSCA profile.</param>
+            <param name="NotBefore">The not before.</param>
+            <param name="NotAfter">The not after.</param>
+            <returns>
+            An X509Certificate.
+            </returns>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.CngV3CertGen.#ctor">
+            <summary>
+            Constructor for V3 Certificate Generator (system crypto libraries)
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.CngV3CertGen.Generate(System.Security.Cryptography.CngKey)">
+            <summary>
+            Generate an X509 Certificate
+            </summary>
+            <param name="cspParam">CspParameters instance that has the private signing key</param>
+            <returns>An X509 Certificate</returns>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.CngV3CertGen.Generate(System.Security.Cryptography.CngKey,Org.BouncyCastle.Asn1.X509.X509Extensions)">
+            <summary>
+            Generate an X509Certificate.
+            </summary>
+            <param name="cspParam">CspParameters instance that has the private signing key</param>
+            <param name="Extensions">Extensions to include in the certificate</param>
+            <returns>An X509Certificate.</returns>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.CngV3CertGen.Generate(System.Security.Cryptography.CngKey,OSCA.Profile.Profile,System.DateTime,System.DateTime)">
+            <summary>
+            Generate an X509Certificate.
+            </summary>
+            <param name="cspParam">The CSP parameter.</param>
+            <param name="Profile">OSCA profile.</param>
+            <param name="NotBefore">The not before.</param>
+            <param name="NotAfter">The not after.</param>
+            <returns>
+            An X509Certificate.
+            </returns>
+            <exception cref="T:OSCA.Policy.PolicyEnforcementException">CA policy violation</exception>
+            <exception cref="T:Org.BouncyCastle.Security.Certificates.CertificateEncodingException">Exception encoding TBS cert
+            or
+            Exception producing certificate object</exception>
+        </member>
+        <member name="T:OSCA.Offline.cngCA">
+            <summary>
+            Class describing a generic CNG CA
+            </summary>
+            <remarks>This is a Version 3.x class
+            <para>NOTE - this is an experiemental implementation with limitations (like no protection of the files with xml signatures
+            </para></remarks>
+        </member>
+        <member name="F:OSCA.Offline.cngCA.privateKey">
+            <summary>
+            Signing key for the CA
+            </summary>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.#ctor(System.String)">
+            <summary>
+            Create an instance of a generic System Crypto CA
+            </summary>
+            <param name="ConfigFile">Full pathname to config file</param>
+            <exception cref="T:Org.BouncyCastle.Security.InvalidParameterException">Invalid FIPS140 flag for this CA instance</exception>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.Backup(System.String,System.String)">
+            <summary>
+            Backup the CA key material to a PKCS#12 file
+            </summary>
+            <param name="Password">Strong password used for encryption</param>
+            <param name="OutputFile">Full pathname to the PKCS#12 output file</param>
+            <exception cref="T:System.ApplicationException">Failed Key Backup</exception>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.getCertificateGenerator">
+            <summary>
+            Return a certificate generator instance for this CA
+            </summary>
+            <returns>Certificate generator</returns>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.generate(OSCA.Crypto.ICertGen,OSCA.Profile.Profile,System.DateTime,System.DateTime)">
+            <summary>
+            Generates the certificate.
+            </summary>
+            <param name="gen">The generator.</param>
+            <param name="profile">The profile.</param>
+            <param name="notBefore"></param>
+            <param name="notAfter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.generate(OSCA.Crypto.ICertGen)">
+            <summary>
+            Generate a certificate
+            </summary>
+            <remarks>All extensions in request will be included in the certificate</remarks>
+            <param name="gen">Certificate generator instance</param>
+            <returns>New certificate</returns>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.generate(OSCA.Crypto.ICertGen,Org.BouncyCastle.Asn1.X509.X509Extensions)">
+            <summary>
+            Generate a certificate
+            </summary>
+            <remarks>Only the extensions supplied will be included in the certificate</remarks>
+            <param name="gen">Certificate generator instance</param>
+            <param name="ext">Extensions to include in the certificate</param>
+            <returns>New certificate</returns>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.IssueCRL">
+            <summary>
+            Issue a CRL (containing all revoked certificates)
+            </summary>
+            <returns>CRL number</returns>
+        </member>
+        <member name="T:OSCA.Crypto.CNG.CngCrlGen">
+            class to produce an X.509 Version 2 CRL using System crypto
+        </member>
+        <member name="M:OSCA.Crypto.CNG.CngCrlGen.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OSCA.Crypto.SysCrlGen"/> class.
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.CngCrlGen.Generate(System.Security.Cryptography.CngKey)">
+            <summary>Generate an X509 CRL, based on the current issuer and subject.</summary>
+            <param name="cspParam">CSP Parameters containing the key</param>
         </member>
     </members>
 </doc>

@@ -65,6 +65,8 @@ namespace OSCA
                         return new bcCA(ConfigFile, Password);
                     case CA_Type.dhTA:
                         return new dhTA(ConfigFile);
+                    case CA_Type.cngCA:
+                        return new cngCA(ConfigFile);
                     default:
                         return null;    // Should never see this
                 }

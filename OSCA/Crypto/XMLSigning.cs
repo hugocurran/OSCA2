@@ -20,6 +20,9 @@ namespace OSCA.Crypto
     /// </summary>
     public static class XmlSigning
     {
+        //
+        //  !!!!!! Important - to support the experimental cngCA, signing/validation is bypassed if there is no key reference !!!!
+        //
         #region SIGN
 
         /// <summary>
@@ -84,59 +87,61 @@ namespace OSCA.Crypto
                 doc.DocumentElement.RemoveChild(xmlNode);
             }
 
-            // Create a SignedXml object.
-            SignedXml signedXml = new SignedXml(doc);
-
-            // Create a reference element for the signature.
-            Reference reference = new Reference();
-            reference.Uri = "";
-
-            // Add an enveloped transformation to the reference.
-            XmlDsigEnvelopedSignatureTransform env = new XmlDsigEnvelopedSignatureTransform();
-            reference.AddTransform(env);
-
-            // Add the reference to the SignedXml object.
-            signedXml.AddReference(reference);
-
-            // Create a KeyInfo element.
-            KeyInfo keyInfo = new KeyInfo();
-
-            // Create KeyInfoX509Data subelement and configure
-            // Load the certificate into the KeyInfoX509Data subelement
-            KeyInfoX509Data kdata = new KeyInfoX509Data(sysCert);
-
-            // Create an X509IssuerSerial element and add it to the
-            // KeyInfoX509Data.
-            X509IssuerSerial xserial = new X509IssuerSerial();
-            xserial.IssuerName = sysCert.IssuerName.Name;
-            xserial.SerialNumber = sysCert.SerialNumber;
-            kdata.AddIssuerSerial(xserial.IssuerName, xserial.SerialNumber);
-
-            // Add the KeyInfoX509Data subelement to the KeyInfo element
-            keyInfo.AddClause(kdata);
-
-            // Add the KeyInfo element to the SignedXml object.
-            signedXml.KeyInfo = keyInfo;
-
-            // Compute the signature
-            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(cspParam))
-            {            
-                // Set the key to sign the Xml document 
-                signedXml.SigningKey = rsa;
-                // Compute the signature.
-                signedXml.ComputeSignature();
-            }
-
-            // Get the XML representation of the signature
-            XmlElement xmlDigitalSignature = signedXml.GetXml();
-
-            // Append the element to the XML document.
-            doc.DocumentElement.AppendChild(doc.ImportNode(xmlDigitalSignature, true));
-
-            // Get rid of the <?xml version.. in the document (it is added by the writer?)
-            if (doc.FirstChild is XmlDeclaration)
+            if (cspParam != null)
             {
-                doc.RemoveChild(doc.FirstChild);
+
+                // Create a SignedXml object.
+                SignedXml signedXml = new SignedXml(doc);
+
+                // Create a reference element for the signature.
+                Reference reference = new Reference();
+                reference.Uri = "";
+
+                // Add an enveloped transformation to the reference.
+                XmlDsigEnvelopedSignatureTransform env = new XmlDsigEnvelopedSignatureTransform();
+                reference.AddTransform(env);
+
+                // Add the reference to the SignedXml object.
+                signedXml.AddReference(reference);
+
+                // Create a KeyInfo element.
+                KeyInfo keyInfo = new KeyInfo();
+
+                // Create KeyInfoX509Data subelement and configure
+                // Load the certificate into the KeyInfoX509Data subelement
+                KeyInfoX509Data kdata = new KeyInfoX509Data(sysCert);
+
+                // Create an X509IssuerSerial element and add it to the
+                // KeyInfoX509Data.
+                X509IssuerSerial xserial = new X509IssuerSerial();
+                xserial.IssuerName = sysCert.IssuerName.Name;
+                xserial.SerialNumber = sysCert.SerialNumber;
+                kdata.AddIssuerSerial(xserial.IssuerName, xserial.SerialNumber);
+
+                // Add the KeyInfoX509Data subelement to the KeyInfo element
+                keyInfo.AddClause(kdata);
+
+                // Add the KeyInfo element to the SignedXml object.
+                signedXml.KeyInfo = keyInfo;
+
+                // Compute the signature
+                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(cspParam))
+                {
+                    // Set the key to sign the Xml document 
+                    signedXml.SigningKey = rsa;
+                    // Compute the signature.
+                    signedXml.ComputeSignature();
+                }
+
+                // Get the XML representation of the signature
+                XmlElement xmlDigitalSignature = signedXml.GetXml();
+
+                // Append the element to the XML document.
+                doc.DocumentElement.AppendChild(doc.ImportNode(xmlDigitalSignature, true));
+
+                // Get rid of the <?xml version.. in the document (it is added by the writer?)
+                if (doc.FirstChild is XmlDeclaration)
+                    doc.RemoveChild(doc.FirstChild);
             }
 
             // Save the signed XML document to the specified file.
@@ -184,6 +189,10 @@ namespace OSCA.Crypto
             // XmlNodeList object.
             XmlNodeList nodeList = xmlDocument.GetElementsByTagName("Signature");
 
+            // nodeList shoud be empty if there is no sig block (cngCA case)
+            if (nodeList.Count == 0)
+                return true;
+
             // Load the signature node.
             signedXml.LoadXml((XmlElement)nodeList[0]);
 
@@ -218,11 +227,16 @@ namespace OSCA.Crypto
 
             // get the signature node
             XmlNodeList nodeList = doc.GetElementsByTagName("Signature");
-            XmlNode xmlNode = nodeList[0];
 
-            // Remove the signature node
-            xmlNode.RemoveAll();
-            doc.DocumentElement.RemoveChild(xmlNode);
+            // If nodeList is empty there is no sig - cngCA case
+            if (nodeList.Count > 0)
+            {
+                XmlNode xmlNode = nodeList[0];
+
+                // Remove the signature node
+                xmlNode.RemoveAll();
+                doc.DocumentElement.RemoveChild(xmlNode);
+            }
 
             using (MemoryStream ms = new MemoryStream())
             {

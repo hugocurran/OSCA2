@@ -15,7 +15,7 @@ namespace OSCA.Log
     {    
         private string logFile;     // Pathname of logfile
         private int lastEvent;      // ID number of the last event written
-        internal CspParameters cspParam;    // Params for the signing key
+        internal CspParameters cspParam;    // Reference to the signing key
         internal X509Certificate cert;      // Certificate for signature verification
 
         /// <summary>
@@ -75,5 +75,6 @@ namespace OSCA.Log
                 throw new GeneralSecurityException("Signature failure on log file");
             }
         }
+
     }
 }

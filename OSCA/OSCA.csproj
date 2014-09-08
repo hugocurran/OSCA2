@@ -103,11 +103,14 @@
     <Compile Include="CrlReason.cs" />
     <Compile Include="Crypto\BC\BcKeyManager.cs" />
     <Compile Include="Crypto\BC\BcV1CertGen.cs" />
+    <Compile Include="Crypto\CNG\CngCrlGen.cs" />
     <Compile Include="Crypto\CNG\CngSigner.cs" />
     <Compile Include="Crypto\CNG\CngKeyManager.cs" />
+    <Compile Include="Crypto\CNG\CngV3CertGen.cs" />
     <Compile Include="Crypto\CNG\Rfc4050KeyFormatter.cs" />
     <Compile Include="Crypto\IbcCertGen.cs" />
-    <Compile Include="Crypto\Sys\IsysCertGen.cs" />
+    <Compile Include="Crypto\IcngCertGen.cs" />
+    <Compile Include="Crypto\IsysCertGen.cs" />
     <Compile Include="Crypto\V1CertGen.cs" />
     <Compile Include="Crypto\V3CertGen.cs" />
     <Compile Include="Crypto\X509\CertificatePolicies.cs" />
@@ -132,6 +135,7 @@
     <Compile Include="Offline\bcCA.cs" />
     <Compile Include="Offline\CAConfig.cs" />
     <Compile Include="GeneralNames.cs" />
+    <Compile Include="Offline\cngCA.cs" />
     <Compile Include="Offline\dhTA.cs" />
     <Compile Include="Offline\OSCA_CA.cs" />
     <Compile Include="Offline\sysCA.cs" />

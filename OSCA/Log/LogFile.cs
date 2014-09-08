@@ -23,6 +23,8 @@ namespace OSCA.Log
         /// <param name="cspParam">CSP parameters for signing key</param>
         internal static void createLogFile(string logFile, string version, X509Certificate cert, CspParameters cspParam)
         {
+            // Modified to allow cngCA to run without signatures
+
             XDocument log = new XDocument(
                 new XDeclaration("1.0", "utf-8", "yes"),
                 new XComment("CA Log File"),
@@ -32,7 +34,8 @@ namespace OSCA.Log
                     new XElement("events")
                 )
              );
-            // Sign and save the file
+
+            // Sign and save the file      
             XmlSigning.SignXml(log, logFile, cert, cspParam);
         }
     }
