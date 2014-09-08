@@ -144,17 +144,17 @@ namespace OSCA.Offline
             // V3 extensions
             if (Config.version == X509ver.V3)
             {
-                    certGen.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(publicKey));
-                    certGen.AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(publicKey));
-                    certGen.AddExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(true));
-                    certGen.AddExtension(X509Extensions.KeyUsage, true, new X509KeyUsage(Config.keyUsage));
+                    ((V3CertGen)certGen).AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(publicKey));
+                    ((V3CertGen)certGen).AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(publicKey));
+                    ((V3CertGen)certGen).AddExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(true));
+                    ((V3CertGen)certGen).AddExtension(X509Extensions.KeyUsage, true, new X509KeyUsage(Config.keyUsage));
             }
 
             X509Certificate caCert;
             if (Config.FIPS140)
-                caCert = certGen.Generate(cspParam);
+                caCert = ((IsysCertGen)certGen).Generate(cspParam);
             else
-                caCert = certGen.Generate(keyPair.Private);
+                caCert = ((IbcCertGen)certGen).Generate(keyPair.Private);
 
             string configFile;
             if (Config.FIPS140)

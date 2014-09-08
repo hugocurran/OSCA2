@@ -16,13 +16,14 @@ using System.Collections.Generic;
 using OSCA.Profile;
 using OSCA.Offline;
 
+
 namespace OSCA.Crypto
 {
     /// <summary>
     /// A class to Generate Version 3 X509Certificates.
     /// Uses system crypto libraries
     /// </summary>
-    public class SysV3CertGen : BcV3CertGen, ICertGen
+    public class SysV3CertGen : V3CertGen, IsysCertGen
     {
         /// <summary>
         /// Constructor for V3 Certificate Generator (system crypto libraries)
@@ -30,17 +31,14 @@ namespace OSCA.Crypto
         public SysV3CertGen() : base() {}
 
 
-        internal SysV3CertGen(List<PolicyEnforcement> Policy) : this()
-        {
-            this.policy = Policy;
-        }
+        internal SysV3CertGen(List<PolicyEnforcement> Policy) : base(Policy) {}
 
         /// <summary>
         /// Generate an X509 Certificate
         /// </summary>
         /// <param name="cspParam">CspParameters instance that has the private signing key</param>
         /// <returns>An X509 Certificate</returns>
-        public override X509Certificate Generate(CspParameters cspParam)
+        public X509Certificate Generate(CspParameters cspParam)
         {
             return Generate(cspParam, null);
         }
@@ -51,7 +49,7 @@ namespace OSCA.Crypto
         /// <param name="cspParam">CspParameters instance that has the private signing key</param>
         /// <param name="Extensions">Extensions to include in the certificate</param>
         /// <returns>An X509Certificate.</returns>
-        public override X509Certificate Generate(CspParameters cspParam, X509Extensions Extensions)
+        public X509Certificate Generate(CspParameters cspParam, X509Extensions Extensions)
         {
             TbsCertificateStructure tbsCert = GenerateTbsCert(Extensions);
 
@@ -101,7 +99,7 @@ namespace OSCA.Crypto
         /// <exception cref="CertificateEncodingException">Exception encoding TBS cert
         /// or
         /// Exception producing certificate object</exception>
-        public override X509Certificate Generate(CspParameters cspParam, Profile.Profile Profile, DateTime NotBefore, DateTime NotAfter)
+        public X509Certificate Generate(CspParameters cspParam, Profile.Profile Profile, DateTime NotBefore, DateTime NotAfter)
         {
             // Set the validity
             tbsGen.SetStartDate(new Time(NotBefore));
@@ -115,54 +113,6 @@ namespace OSCA.Crypto
             return Generate(cspParam, extGenerator.Generate());
         }
 
-        #region Stubs for BC cryptography
-
-        /// <summary>
-        /// Generate an X509Certificate.
-        /// Always throws an exception
-        /// </summary>
-        /// <param name="privateKey">The private key of the issuer that is signing this certificate.</param>
-        /// <returns>
-        /// An X509Certificate.
-        /// </returns>
-        /// <exception cref="System.InvalidOperationException">BC Cryptography not valid in system context</exception>
-        public override X509Certificate Generate(AsymmetricKeyParameter privateKey)
-        {
-            throw new InvalidOperationException("BC Cryptography not valid in system context");
-        }
-
-        /// <summary>
-        /// Generate an X509Certificate.
-        /// Always throws an exception
-        /// </summary>
-        /// <param name="privateKey">The private key of the issuer that is signing this certificate.</param>
-        /// <param name="Extensions">Set of extensions to include in the certificate.</param>
-        /// <returns>
-        /// An X509Certificate.
-        /// </returns>
-        /// <exception cref="System.InvalidOperationException">BC Cryptography not valid in system context</exception>
-        public override X509Certificate Generate(AsymmetricKeyParameter privateKey, X509Extensions Extensions)
-        {
-            throw new InvalidOperationException("BC Cryptography not valid in system context");
-        }
-
-        /// <summary>
-        /// Generate an X509Certificate.
-        /// <remarks>Always throws an exception</remarks>
-        /// </summary>
-        /// <param name="privateKey">The private key of the issuer that is signing this certificate.</param>
-        /// <param name="Profile">OSCA profile.</param>
-        /// <param name="Start">Start date</param>
-        /// <returns>
-        /// An X509Certificate.
-        /// </returns>
-        /// <exception cref="System.InvalidOperationException">BC Cryptography not valid in system context</exception>
-        public override X509Certificate Generate(AsymmetricKeyParameter privateKey, Profile.Profile Profile, DateTime NotBefore, DateTime NotAfter)
-        {
-            throw new InvalidOperationException("BC Cryptography not valid in system context");
-        }
-        
-        #endregion
 
         /// <summary>
         /// Allows enumeration of the signature names supported by the generator.
@@ -170,10 +120,11 @@ namespace OSCA.Crypto
         /*
          * TODO: Make this return the system list
          */
-
+        /*
         public override IEnumerable SignatureAlgNames
         {
             get { return X509Utilities.GetAlgNames(); }
         }
+        */
     }
 }

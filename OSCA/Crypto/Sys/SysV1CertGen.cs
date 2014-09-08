@@ -18,7 +18,7 @@ namespace OSCA.Crypto
     /// A class to Generate Version 3 X509Certificates.
     /// Uses system crypto libraries
     /// </summary>
-    public class SysV1CertGen : BcV1CertGen, ICertGen
+    public class SysV1CertGen : V1CertGen
     {
         /// <summary>
         /// Constructor for OSCA V1 Certificate Generator (system crypto libraries)
@@ -30,7 +30,7 @@ namespace OSCA.Crypto
         /// </summary>
         /// <param name="cspParam">CspParameters instance that has the private signing key</param>
         /// <returns>An X509 Certificate</returns>
-        public override X509Certificate Generate(CspParameters cspParam)
+        public X509Certificate Generate(CspParameters cspParam)
         {
             TbsCertificateStructure tbsCert = tbsGen.GenerateTbsCertificate();
             byte[] cert = tbsCert.GetEncoded();
@@ -55,7 +55,7 @@ namespace OSCA.Crypto
             }
         }
 
-        public override X509Certificate Generate(CspParameters cspParam, Profile.Profile Profile, DateTime NotBefore, DateTime NotAfter)
+        public X509Certificate Generate(CspParameters cspParam, Profile.Profile Profile, DateTime NotBefore, DateTime NotAfter)
         {
             SetNotBefore(NotBefore);
             SetNotAfter(NotAfter);
@@ -70,12 +70,13 @@ namespace OSCA.Crypto
         /// <param name="cspParam">CspParameters instance that has the private signing key</param>
         /// <param name="Extensions">Extensions to include in the certificate (ignored)</param>
         /// <returns>An X509Certificate.</returns>
-        public override X509Certificate Generate(CspParameters cspParam, X509Extensions Extensions)
+        public X509Certificate Generate(CspParameters cspParam, X509Extensions Extensions)
         {
             // Ignore extensions
             return Generate(cspParam);
         }
 
+        /*
         #region Stubs for BC cryptography
 
         /// <summary>
@@ -105,6 +106,8 @@ namespace OSCA.Crypto
         }
 
         #endregion
+         * 
+         */
 
         /// <summary>
         /// Allows enumeration of the signature names supported by the generator.
@@ -113,7 +116,7 @@ namespace OSCA.Crypto
          * TODO: Make this return the system list
          */
 
-        public override IEnumerable SignatureAlgNames
+        public IEnumerable SignatureAlgNames
         {
             get { return X509Utilities.GetAlgNames(); }
         }

@@ -101,6 +101,10 @@
     <Compile Include="CrlReason.cs" />
     <Compile Include="Crypto\BC\BcKeyManager.cs" />
     <Compile Include="Crypto\BC\BcV1CertGen.cs" />
+    <Compile Include="Crypto\IbcCertGen.cs" />
+    <Compile Include="Crypto\Sys\IsysCertGen.cs" />
+    <Compile Include="Crypto\V1CertGen.cs" />
+    <Compile Include="Crypto\V3CertGen.cs" />
     <Compile Include="Crypto\X509\CertificatePolicies.cs" />
     <Compile Include="Crypto\Pkcs7.cs" />
     <Compile Include="Crypto\Sys\SysCSP.cs" />

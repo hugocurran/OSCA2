@@ -122,7 +122,10 @@ namespace OSCA.Offline
         /// <returns></returns>
         protected override X509Certificate generate(ICertGen gen, Profile.Profile profile, DateTime notBefore, DateTime notAfter)
         {
-            return gen.Generate(cspParam, profile, notBefore, notAfter);
+            if (gen is SysV1CertGen)
+                return ((SysV1CertGen)gen).Generate(cspParam, profile, notBefore, notAfter);
+            else
+                return ((SysV3CertGen)gen).Generate(cspParam, profile, notBefore, notAfter);
         }
 
         /// <summary>
@@ -133,7 +136,10 @@ namespace OSCA.Offline
         /// <returns>New certificate</returns>
         protected override X509Certificate generate(ICertGen gen)
         {
-            return gen.Generate(cspParam);
+            if (gen is SysV1CertGen)
+                return ((SysV1CertGen)gen).Generate(cspParam);
+            else
+                return ((SysV3CertGen)gen).Generate(cspParam);
         }
 
         /// <summary>
@@ -145,7 +151,10 @@ namespace OSCA.Offline
         /// <returns>New certificate</returns>
         protected override X509Certificate generate(ICertGen gen, X509Extensions ext)
         {
-            return gen.Generate(cspParam, ext);
+            if (gen is SysV1CertGen)
+                return ((SysV1CertGen)gen).Generate(cspParam, ext);
+            else
+                return ((SysV3CertGen)gen).Generate(cspParam, ext);
         }
 
         /// <summary>
