@@ -295,7 +295,7 @@ namespace OSCA.Offline
         /// <returns></returns>
         protected virtual X509Certificate generate(ICertGen gen, Profile.Profile profile, DateTime notBefore, DateTime notAfter)
         {
-            return gen.Generate(privateKey, profile, notBefore, notAfter);
+            return ((IbcCertGen)gen).Generate(privateKey, profile, notBefore, notAfter);
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace OSCA.Offline
         /// <returns></returns>
         protected virtual X509Certificate generate(ICertGen gen)
         {
-            return gen.Generate(privateKey);
+            return ((IbcCertGen)gen).Generate(privateKey);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace OSCA.Offline
         /// <returns></returns>
         protected virtual X509Certificate generate(ICertGen gen, X509Extensions ext)
         {
-            return gen.Generate(privateKey, ext);
+            return ((IbcCertGen)gen).Generate(privateKey, ext);
         }
 
         /// <summary>
@@ -542,18 +542,21 @@ namespace OSCA.Offline
             certGen.SetSubjectDN(p10.Subject);
             certGen.SetPublicKey(p10.PublicKey);
             certGen.SetSignatureAlgorithm(signatureAlgorithm);
-            certGen.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(caCertificate.GetPublicKey()));
-            certGen.AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(p10.PublicKey));
+            if (certGen.GetVersion() == X509ver.V3)
+            {
+                ((V3CertGen)certGen).AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(caCertificate.GetPublicKey()));
+                ((V3CertGen)certGen).AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(p10.PublicKey));
+            }
 
             // Add further extensions either from profile or request attributes
             // If a profile is specified ignore all attributes apart from SubjAltName
             if (profile != null)
             {
                 // Add in SubjAltName if there is one
-                if (p10.SubjectAltNames != null)
+                if ((p10.SubjectAltNames != null) && (certGen.GetVersion() == X509ver.V3))
                 {
                     bool critical = p10.IsCritical(X509Extensions.SubjectAlternativeName);
-                    certGen.AddExtension(X509Extensions.SubjectAlternativeName, critical, p10.SubjectAltNames);
+                    ((V3CertGen)certGen).AddExtension(X509Extensions.SubjectAlternativeName, critical, p10.SubjectAltNames);
                 }
 
                 // Capture the profile name for database

@@ -558,10 +558,10 @@ namespace OSCA.Offline
             certGen.SetSubjectDN(p10.Subject);
             certGen.SetPublicKey(p10.PublicKey);
             certGen.SetSignatureAlgorithm(signatureAlgorithm);
-            if ((certGen is BcV3CertGen) || (certGen is SysV3CertGen))
+            if (certGen.GetVersion() == X509ver.V3)
             {
-                certGen.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(caCertificate.GetPublicKey()));
-                certGen.AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(p10.PublicKey));
+                ((V3CertGen)certGen).AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(caCertificate.GetPublicKey()));
+                ((V3CertGen)certGen).AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(p10.PublicKey));
             }
 
             // Add further extensions either from profile or request attributes
@@ -569,10 +569,10 @@ namespace OSCA.Offline
             if (profile != null)
             {
                 // Add in SubjAltName if there is one (there won't be for a V1 certifcate)
-                if (p10.SubjectAltNames != null)
+                if ((p10.SubjectAltNames != null) && (certGen.GetVersion() == X509ver.V3))
                 {
                     bool critical = p10.IsCritical(X509Extensions.SubjectAlternativeName);
-                    certGen.AddExtension(X509Extensions.SubjectAlternativeName, critical, p10.SubjectAltNames);
+                    ((V3CertGen)certGen).AddExtension(X509Extensions.SubjectAlternativeName, critical, p10.SubjectAltNames);
                 }
 
                 // Capture the profile name for database

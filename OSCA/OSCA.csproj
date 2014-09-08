@@ -106,6 +106,10 @@
     <Compile Include="Crypto\CNG\CngSigner.cs" />
     <Compile Include="Crypto\CNG\CngKeyManager.cs" />
     <Compile Include="Crypto\CNG\Rfc4050KeyFormatter.cs" />
+    <Compile Include="Crypto\IbcCertGen.cs" />
+    <Compile Include="Crypto\Sys\IsysCertGen.cs" />
+    <Compile Include="Crypto\V1CertGen.cs" />
+    <Compile Include="Crypto\V3CertGen.cs" />
     <Compile Include="Crypto\X509\CertificatePolicies.cs" />
     <Compile Include="Crypto\Pkcs7.cs" />
     <Compile Include="Crypto\Sys\SysCSP.cs" />

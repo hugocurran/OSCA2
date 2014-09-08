@@ -7,6 +7,7 @@ using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.X509;
+using OSCA.Offline;
 
 namespace OSCA.Crypto
 {
@@ -15,6 +16,12 @@ namespace OSCA.Crypto
     /// </summary>
     public interface ICertGen
     {
+        /// <summary>
+        /// Gets the X509 version returned by the certificate generator
+        /// </summary>
+        /// <returns></returns>
+        X509ver GetVersion();
+
         /// <summary>
         /// Reset the Generator.
         /// </summary>
@@ -66,124 +73,8 @@ namespace OSCA.Crypto
         void SetSignatureAlgorithm(string signatureAlgorithm);
 
         /// <summary>
-        /// Set the subject unique ID - note: it is very rare that it is correct to do this.
-        /// </summary>
-        /// <param name="uniqueID"/>
-        void SetSubjectUniqueID(bool[] uniqueID);
-
-        /// <summary>
-        /// Set the issuer unique ID - note: it is very rare that it is correct to do this.
-        /// </summary>
-        /// <param name="uniqueID"/>
-        void SetIssuerUniqueID(bool[] uniqueID);
-
-        /// <summary>
-        /// Add a given extension field for the standard extensions tag (tag 3).
-        /// </summary>
-        /// <param name="oid">string containing a dotted decimal Object Identifier.</param>
-        /// <param name="critical">Is it critical.</param>
-        /// <param name="extensionValue">The value.</param>
-        void AddExtension(string oid, bool critical, Asn1Encodable extensionValue);
-
-        /// <summary>
-        /// Add an extension to this certificate.
-        /// </summary>
-        /// <param name="oid">Its Object Identifier.</param>
-        /// <param name="critical">Is it critical.</param>
-        /// <param name="extensionValue">The value.</param>
-        void AddExtension(DerObjectIdentifier oid, bool critical, Asn1Encodable extensionValue);
-
-        /// <summary>
-        /// Add an extension using a string with a dotted decimal OID.
-        /// </summary>
-        /// <param name="oid">string containing a dotted decimal Object Identifier.</param>
-        /// <param name="critical">Is it critical.</param>
-        /// <param name="extensionValue">byte[] containing the value of this extension.</param>
-        void AddExtension(string oid, bool critical, byte[] extensionValue);
-
-        /// <summary>
-        /// Add an extension to this certificate.
-        /// </summary>
-        /// <param name="oid">Its Object Identifier.</param>
-        /// <param name="critical">Is it critical.</param>
-        /// <param name="extensionValue">byte[] containing the value of this extension.</param>
-        void AddExtension(DerObjectIdentifier oid, bool critical, byte[] extensionValue);
-
-        /// <summary>
-        /// Add a given extension field for the standard extensions tag (tag 3),
-        /// copying the extension value from another certificate.
-        /// </summary>
-        void CopyAndAddExtension(string oid, bool critical, X509Certificate cert);
-
-        /**
-         * add a given extension field for the standard extensions tag (tag 3)
-         * copying the extension value from another certificate.
-         * @throws CertificateParsingException if the extension cannot be extracted.
-         */
-        void CopyAndAddExtension(DerObjectIdentifier oid, bool critical, X509Certificate cert);
-
-        /// <summary>
-        /// Generate an X509Certificate.
-        /// </summary>
-        /// <param name="privateKey">The private key of the issuer that is signing this certificate.</param>
-        /// <returns>
-        /// An X509Certificate.
-        /// </returns>
-        X509Certificate Generate(AsymmetricKeyParameter privateKey);
-        //X509Certificate Generate<K>(K privateKey);
-
-        /// <summary>
-        /// Generate an X509 Certificate
-        /// </summary>
-        /// <param name="cspParam">CspParameters instance that has the private signing key</param>
-        /// <returns>
-        /// An X509 Certificate
-        /// </returns>
-        X509Certificate Generate(CspParameters cspParam);
-
-        /// <summary>
-        /// Generate an X509Certificate.
-        /// </summary>
-        /// <param name="privateKey">The private key of the issuer that is signing this certificate.</param>
-        /// <param name="Extensions">The extensions.</param>
-        /// <returns>
-        /// An X509Certificate.
-        /// </returns>
-        X509Certificate Generate(AsymmetricKeyParameter privateKey, X509Extensions Extensions);
-        //X509Certificate Generate<K, E>(K privateKey, E Extensions);
-
-        /// <summary>
-        /// Generate an X509 Certificate
-        /// </summary>
-        /// <param name="cspParam">CspParameters instance that has the private signing key</param>
-        /// <param name="Extensions">The extensions.</param>
-        /// <returns>
-        /// An X509 Certificate
-        /// </returns>
-        X509Certificate Generate(CspParameters cspParam, X509Extensions Extensions);
-
-        /// <summary>
-        /// Generate an X509 Certificate
-        /// </summary>
-        /// <param name="privateKey">The private key.</param>
-        /// <param name="Profile">The profile.</param>
-        /// <param name="ValidityStart">The validity start.</param>
-        /// <returns>X509 Certificate</returns>
-        X509Certificate Generate(AsymmetricKeyParameter privateKey, Profile.Profile Profile, DateTime NotBefore, DateTime NotAfter);
-        //X509Certificate Generate<K, P, B, A>(K privateKey, P Profile, B NotBefore, A NotAfter);
-
-        /// <summary>
-        /// Generate an X509 Certificate
-        /// </summary>
-        /// <param name="cspParam">The CSP parameter.</param>
-        /// <param name="Profile">The profile.</param>
-        /// <param name="ValidityStart">The validity start.</param>
-        /// <returns>X509 Certificate</returns>
-        X509Certificate Generate(CspParameters cspParam, Profile.Profile Profile, DateTime NotBefore, DateTime NotAfter);
-
-        /// <summary>
         /// Allows enumeration of the signature names supported by the generator.
         /// </summary>
-        IEnumerable SignatureAlgNames  { get; }
+        //IEnumerable SignatureAlgNames  { get; }
     }
 }
