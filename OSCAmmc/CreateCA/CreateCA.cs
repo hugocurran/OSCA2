@@ -33,6 +33,7 @@ namespace OSCASnapin
         private CA_Profile profile = CA_Profile.rootCA;
         private X509ver version = X509ver.V3;
         private string profileFile;
+        // Defaults
         private string pkAlgo = "RSA";
         private int pkSize = 2048;
         private string sigAlgo = "SHA1WITHRSA";
@@ -271,7 +272,7 @@ namespace OSCASnapin
                 rb256.Checked = false;
                 rbECDSA.Enabled = false;
                 rbECDSA.Checked = false;
-                sigAlgo = "SHA1WITH" + pkAlgo;
+                sigAlgo = "SHA1WITH";
             }
             else if (rbSHA256.Checked)
             {
@@ -285,7 +286,7 @@ namespace OSCASnapin
                 //rb256.Checked = false;
                 rbECDSA.Enabled = true;
                 //rbECDSA.Checked = false;
-                sigAlgo = "SHA256WITH" + pkAlgo;
+                sigAlgo = "SHA256WITH";
             }
         }
 
@@ -298,19 +299,20 @@ namespace OSCASnapin
         {
             CAConfig caConfig;
             // Assemble all the info
+
             try
             {
                 caConfig = new CAConfig()
                 {
                     name = tbName.Text,
                     DN = new X509Name(true, tbDN.Text),     // 'true' reverses the name to have C= on the left
-                    profile = this.profile,
-                    profileFile = this.profileFile,
-                    pkAlgo = this.pkAlgo,
-                    pkSize = this.pkSize,
-                    sigAlgo = this.sigAlgo,
+                    profile = profile,
+                    profileFile = profileFile,
+                    pkAlgo = pkAlgo,
+                    pkSize = pkSize,
+                    sigAlgo = sigAlgo + pkAlgo,
                     keyUsage = 0x06,                    // Hardwired to CertSign|CRLSign per RFC 5280
-                    version = this.version,
+                    version = version,
                     life = Convert.ToInt32(tbCertValid.Text),
                     units = lbCertUnits.Text,
                     location = tbFolder.Text,                    
@@ -327,8 +329,10 @@ namespace OSCASnapin
             {
                 if (rbTA.Checked)
                     caConfig.caType = CA_Type.dhTA;
-                else
+                else if (!rbECDSA.Checked)
                     caConfig.caType = CA_Type.sysCA;
+                else
+                    caConfig.caType = CA_Type.cngCA;
                 caConfig.FIPS140 = true;
             }
             else

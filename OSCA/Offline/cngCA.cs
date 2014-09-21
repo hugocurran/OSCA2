@@ -65,12 +65,11 @@ namespace OSCA.Offline
         /// <param name="OutputFile">Full pathname to the PKCS#12 output file</param>
         /// <exception cref="System.ApplicationException">Failed Key Backup</exception>
         public override void Backup(string Password, string OutputFile)
-        {
-            /*
+        {            
             try
             {
-                SysKeyManager.ExportToP12(cspParam, caCertificate, OutputFile, Password, name);
-
+                CngKeyManager.ExportToP12(privateKey, caCertificate, OutputFile, Password, name);
+                
                 logEvent(LogEvent.EventType.BackupCAKey, "CA Key backup: " + OutputFile);
             }
             catch (Exception ex)
@@ -78,7 +77,7 @@ namespace OSCA.Offline
                 logEvent(LogEvent.EventType.Error, "Failed key backup: " + ex.Message);
                 throw new ApplicationException("Failed Key Backup", ex);
             }
-             * */
+            
         }
 
 

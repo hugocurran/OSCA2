@@ -2220,7 +2220,7 @@
                 Determine which ECC algorithm the key refers to
             </summary>
         </member>
-        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.ReadPublicKey(System.Xml.XPath.XPathNavigator,System.Numerics.BigInteger@,System.Numerics.BigInteger@)">
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.ReadPublicKey(System.Xml.XPath.XPathNavigator,Org.BouncyCastle.Math.BigInteger@,Org.BouncyCastle.Math.BigInteger@)">
             <summary>
                 Read the x and y components of the public key
             </summary>
@@ -2235,7 +2235,7 @@
                 Convert a key to XML
             </summary>
         </member>
-        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.UnpackEccPublicBlob(System.Byte[],System.Numerics.BigInteger@,System.Numerics.BigInteger@)">
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.UnpackEccPublicBlob(System.Byte[],Org.BouncyCastle.Math.BigInteger@,Org.BouncyCastle.Math.BigInteger@)">
             <summary>
                 Unpack a key blob in ECC public blob format into its X and Y parameters
             
@@ -2253,7 +2253,7 @@
                 Reverse a section of bytes within a buffer
             </summary>
         </member>
-        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.BuildEccPublicBlob(System.String,System.Numerics.BigInteger,System.Numerics.BigInteger)">
+        <member name="M:OSCA.Crypto.CNG.Rfc4050KeyFormatter.BuildEccPublicBlob(System.String,Org.BouncyCastle.Math.BigInteger,Org.BouncyCastle.Math.BigInteger)">
             <summary>
                 Build an ECC public key blob to represent the given parameters
             </summary>
@@ -3778,6 +3778,37 @@
             <summary>
             Allows enumeration of the signature names supported by the generator.
             </summary>
+        </member>
+        <member name="M:OSCA.Crypto.IcngCertGen.Generate(System.Security.Cryptography.CngKey)">
+            <summary>
+            Generate an X509 Certificate
+            </summary>
+            <param name="key">Reference to signing key.</param>
+            <returns>
+            An X509 Certificate
+            </returns>
+        </member>
+        <member name="M:OSCA.Crypto.IcngCertGen.Generate(System.Security.Cryptography.CngKey,Org.BouncyCastle.Asn1.X509.X509Extensions)">
+            <summary>
+            Generate an X509Certificate.
+            </summary>
+            <param name="key">Reference to signing key.</param>
+            <param name="Extensions">Extensions to include in the certificate</param>
+            <returns>
+            An X509Certificate.
+            </returns>
+        </member>
+        <member name="M:OSCA.Crypto.IcngCertGen.Generate(System.Security.Cryptography.CngKey,OSCA.Profile.Profile,System.DateTime,System.DateTime)">
+            <summary>
+            Generate an X509Certificate.
+            </summary>
+            <param name="key">Reference to signing key.</param>
+            <param name="Profile">OSCA profile.</param>
+            <param name="NotBefore">The not before.</param>
+            <param name="NotAfter">The not after.</param>
+            <returns>
+            An X509Certificate.
+            </returns>
         </member>
         <member name="T:OSCA.Offline.CaFactory">
             <summary>
@@ -5623,6 +5654,79 @@
             The hash.
             </value>
         </member>
+        <member name="M:OSCA.Crypto.CNG.EccKeyBlob.getCurveName(System.Int32,OSCA.Crypto.CNG.EccKeyBlob.CurveNamespace)">
+            <summary>
+            Determine the curve name from an EC key blob
+            </summary>
+            <param name="magic">Magic number</param>
+            <returns>Curve name</returns>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.EccKeyBlob.getCurveOid(System.Int32,OSCA.Crypto.CNG.EccKeyBlob.CurveNamespace)">
+            <summary>
+            Determine the curve OID from an EC key blob
+            </summary>
+            <param name="magic">Magic number</param>
+            <returns>Curve OID</returns>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.EccKeyBlob.getCurve(System.Int32,OSCA.Crypto.CNG.EccKeyBlob.CurveNamespace)">
+            <summary>
+            Get the curve from an EC key blob
+            </summary>
+            <param name="magic">Magic number</param>
+            <returns>Curve </returns>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.EccKeyBlob.getAlgorithm(System.Int32)">
+            <summary>
+            Determin the algorithm from the magic number
+            </summary>
+            <param name="magic">magic number</param>
+            <returns>algorithm name</returns>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.EccKeyBlob.UnpackEccPublicBlob(System.Byte[])">
+            <summary>
+                Unpack a key blob in ECC public blob format and return the EC public key parameters
+            </summary>
+        </member>
+        <member name="T:OSCA.Crypto.CNG.EccKeyBlob.KeyBlobMagicNumber">
+            <summary>
+                Magic numbers identifying blob types
+            </summary>
+        </member>
+        <member name="T:OSCA.Crypto.CNG.EccKeyBlob.CurveNamespace">
+            <summary>
+            Curve namespace
+            </summary>
+            <remarks>
+            See RFC 5480 - ANSI, NIST and Certificom (sec) use different names for the same curves.
+            </remarks>
+        </member>
+        <member name="F:OSCA.Crypto.CNG.EccKeyBlob.CurveNamespace.X962">
+            <summary>
+            ANSI X.962
+            </summary>
+        </member>
+        <member name="F:OSCA.Crypto.CNG.EccKeyBlob.CurveNamespace.NIST">
+            <summary>
+            FIPS-PUB 186-2
+            </summary>
+        </member>
+        <member name="F:OSCA.Crypto.CNG.EccKeyBlob.CurveNamespace.SEC">
+            <summary>
+            Certicom
+            </summary>
+        </member>
+        <member name="T:OSCA.Crypto.CNG.CngCrlGen">
+            class to produce an X.509 Version 2 CRL using System crypto
+        </member>
+        <member name="M:OSCA.Crypto.CNG.CngCrlGen.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OSCA.Crypto.SysCrlGen"/> class.
+            </summary>
+        </member>
+        <member name="M:OSCA.Crypto.CNG.CngCrlGen.Generate(System.Security.Cryptography.CngKey)">
+            <summary>Generate an X509 CRL, based on the current issuer and subject.</summary>
+            <param name="cspParam">CSP Parameters containing the key</param>
+        </member>
         <member name="T:OSCA.Profile.unknownExtension">
             <summary>
             Unknown extension
@@ -5864,6 +5968,73 @@
             <returns>
             A <see cref="T:System.String"/> that describes this extension
             </returns>
+        </member>
+        <member name="T:OSCA.Offline.cngCA">
+            <summary>
+            Class describing a generic CNG CA
+            </summary>
+            <remarks>This is a Version 3.x class
+            <para>NOTE - this is an experiemental implementation with limitations (like no protection of the files with xml signatures
+            </para></remarks>
+        </member>
+        <member name="F:OSCA.Offline.cngCA.privateKey">
+            <summary>
+            Signing key for the CA
+            </summary>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.#ctor(System.String)">
+            <summary>
+            Create an instance of a generic System Crypto CA
+            </summary>
+            <param name="ConfigFile">Full pathname to config file</param>
+            <exception cref="T:Org.BouncyCastle.Security.InvalidParameterException">Invalid FIPS140 flag for this CA instance</exception>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.Backup(System.String,System.String)">
+            <summary>
+            Backup the CA key material to a PKCS#12 file
+            </summary>
+            <param name="Password">Strong password used for encryption</param>
+            <param name="OutputFile">Full pathname to the PKCS#12 output file</param>
+            <exception cref="T:System.ApplicationException">Failed Key Backup</exception>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.getCertificateGenerator">
+            <summary>
+            Return a certificate generator instance for this CA
+            </summary>
+            <returns>Certificate generator</returns>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.generate(OSCA.Crypto.ICertGen,OSCA.Profile.Profile,System.DateTime,System.DateTime)">
+            <summary>
+            Generates the certificate.
+            </summary>
+            <param name="gen">The generator.</param>
+            <param name="profile">The profile.</param>
+            <param name="notBefore"></param>
+            <param name="notAfter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.generate(OSCA.Crypto.ICertGen)">
+            <summary>
+            Generate a certificate
+            </summary>
+            <remarks>All extensions in request will be included in the certificate</remarks>
+            <param name="gen">Certificate generator instance</param>
+            <returns>New certificate</returns>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.generate(OSCA.Crypto.ICertGen,Org.BouncyCastle.Asn1.X509.X509Extensions)">
+            <summary>
+            Generate a certificate
+            </summary>
+            <remarks>Only the extensions supplied will be included in the certificate</remarks>
+            <param name="gen">Certificate generator instance</param>
+            <param name="ext">Extensions to include in the certificate</param>
+            <returns>New certificate</returns>
+        </member>
+        <member name="M:OSCA.Offline.cngCA.IssueCRL">
+            <summary>
+            Issue a CRL (containing all revoked certificates)
+            </summary>
+            <returns>CRL number</returns>
         </member>
         <member name="T:OSCA.Crypto.X509.OcspNocheck">
             <summary>
@@ -6439,37 +6610,6 @@
             The minor version.
             </value>
         </member>
-        <member name="M:OSCA.Crypto.IcngCertGen.Generate(System.Security.Cryptography.CngKey)">
-            <summary>
-            Generate an X509 Certificate
-            </summary>
-            <param name="key">Reference to signing key.</param>
-            <returns>
-            An X509 Certificate
-            </returns>
-        </member>
-        <member name="M:OSCA.Crypto.IcngCertGen.Generate(System.Security.Cryptography.CngKey,Org.BouncyCastle.Asn1.X509.X509Extensions)">
-            <summary>
-            Generate an X509Certificate.
-            </summary>
-            <param name="key">Reference to signing key.</param>
-            <param name="Extensions">Extensions to include in the certificate</param>
-            <returns>
-            An X509Certificate.
-            </returns>
-        </member>
-        <member name="M:OSCA.Crypto.IcngCertGen.Generate(System.Security.Cryptography.CngKey,OSCA.Profile.Profile,System.DateTime,System.DateTime)">
-            <summary>
-            Generate an X509Certificate.
-            </summary>
-            <param name="key">Reference to signing key.</param>
-            <param name="Profile">OSCA profile.</param>
-            <param name="NotBefore">The not before.</param>
-            <param name="NotAfter">The not after.</param>
-            <returns>
-            An X509Certificate.
-            </returns>
-        </member>
         <member name="M:OSCA.Crypto.CNG.CngV3CertGen.#ctor">
             <summary>
             Constructor for V3 Certificate Generator (system crypto libraries)
@@ -6505,85 +6645,6 @@
             <exception cref="T:Org.BouncyCastle.Security.Certificates.CertificateEncodingException">Exception encoding TBS cert
             or
             Exception producing certificate object</exception>
-        </member>
-        <member name="T:OSCA.Offline.cngCA">
-            <summary>
-            Class describing a generic CNG CA
-            </summary>
-            <remarks>This is a Version 3.x class
-            <para>NOTE - this is an experiemental implementation with limitations (like no protection of the files with xml signatures
-            </para></remarks>
-        </member>
-        <member name="F:OSCA.Offline.cngCA.privateKey">
-            <summary>
-            Signing key for the CA
-            </summary>
-        </member>
-        <member name="M:OSCA.Offline.cngCA.#ctor(System.String)">
-            <summary>
-            Create an instance of a generic System Crypto CA
-            </summary>
-            <param name="ConfigFile">Full pathname to config file</param>
-            <exception cref="T:Org.BouncyCastle.Security.InvalidParameterException">Invalid FIPS140 flag for this CA instance</exception>
-        </member>
-        <member name="M:OSCA.Offline.cngCA.Backup(System.String,System.String)">
-            <summary>
-            Backup the CA key material to a PKCS#12 file
-            </summary>
-            <param name="Password">Strong password used for encryption</param>
-            <param name="OutputFile">Full pathname to the PKCS#12 output file</param>
-            <exception cref="T:System.ApplicationException">Failed Key Backup</exception>
-        </member>
-        <member name="M:OSCA.Offline.cngCA.getCertificateGenerator">
-            <summary>
-            Return a certificate generator instance for this CA
-            </summary>
-            <returns>Certificate generator</returns>
-        </member>
-        <member name="M:OSCA.Offline.cngCA.generate(OSCA.Crypto.ICertGen,OSCA.Profile.Profile,System.DateTime,System.DateTime)">
-            <summary>
-            Generates the certificate.
-            </summary>
-            <param name="gen">The generator.</param>
-            <param name="profile">The profile.</param>
-            <param name="notBefore"></param>
-            <param name="notAfter"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OSCA.Offline.cngCA.generate(OSCA.Crypto.ICertGen)">
-            <summary>
-            Generate a certificate
-            </summary>
-            <remarks>All extensions in request will be included in the certificate</remarks>
-            <param name="gen">Certificate generator instance</param>
-            <returns>New certificate</returns>
-        </member>
-        <member name="M:OSCA.Offline.cngCA.generate(OSCA.Crypto.ICertGen,Org.BouncyCastle.Asn1.X509.X509Extensions)">
-            <summary>
-            Generate a certificate
-            </summary>
-            <remarks>Only the extensions supplied will be included in the certificate</remarks>
-            <param name="gen">Certificate generator instance</param>
-            <param name="ext">Extensions to include in the certificate</param>
-            <returns>New certificate</returns>
-        </member>
-        <member name="M:OSCA.Offline.cngCA.IssueCRL">
-            <summary>
-            Issue a CRL (containing all revoked certificates)
-            </summary>
-            <returns>CRL number</returns>
-        </member>
-        <member name="T:OSCA.Crypto.CNG.CngCrlGen">
-            class to produce an X.509 Version 2 CRL using System crypto
-        </member>
-        <member name="M:OSCA.Crypto.CNG.CngCrlGen.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:OSCA.Crypto.SysCrlGen"/> class.
-            </summary>
-        </member>
-        <member name="M:OSCA.Crypto.CNG.CngCrlGen.Generate(System.Security.Cryptography.CngKey)">
-            <summary>Generate an X509 CRL, based on the current issuer and subject.</summary>
-            <param name="cspParam">CSP Parameters containing the key</param>
         </member>
     </members>
 </doc>

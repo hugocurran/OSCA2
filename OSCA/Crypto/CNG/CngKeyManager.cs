@@ -20,7 +20,7 @@
 
 using System;
 using System.IO;
-using System.Numerics;
+//using System.Numerics;
 using System.Security.Cryptography;
 using Org.BouncyCastle.Asn1.X9;
 using Org.BouncyCastle.Crypto;
@@ -29,6 +29,9 @@ using Org.BouncyCastle.Crypto.Prng;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
+using Org.BouncyCastle.Math;
+
+using Sys = System.Security.Cryptography.X509Certificates;
 
 
 namespace OSCA.Crypto.CNG
@@ -55,20 +58,20 @@ namespace OSCA.Crypto.CNG
         /// <remarks>
         /// Keys are exportable
         /// </remarks>
-        internal static CngKey Create(CngAlgorithm pkAlgo, string name)
+        public static CngKey Create(CngAlgorithm pkAlgo, string name)
         {
             // Normalise the name
             string _name = name.Replace(' ', '_');
 
             CngKeyCreationParameters keyParams = new CngKeyCreationParameters();
-            keyParams.ExportPolicy = CngExportPolicies.AllowExport;
+            keyParams.ExportPolicy = CngExportPolicies.AllowPlaintextExport;
             keyParams.KeyCreationOptions = CngKeyCreationOptions.OverwriteExistingKey;
             keyParams.Provider = CngProvider.MicrosoftSoftwareKeyStorageProvider;
 
             // Note that CngAlgorithm is not an enum
-            if (pkAlgo.Algorithm.Contains("ECDsa"))
+            if (pkAlgo.Algorithm.Contains("ECDSA"))
                 keyParams.KeyUsage = CngKeyUsages.Signing;
-            else if (pkAlgo.Algorithm.Contains("ECDsa"))
+            else if (pkAlgo.Algorithm.Contains("ECDH"))
                 keyParams.KeyUsage = CngKeyUsages.KeyAgreement;
             else
                 throw new NotSupportedException("Creation of key not supported for: " + pkAlgo.Algorithm);
@@ -81,26 +84,9 @@ namespace OSCA.Crypto.CNG
 
         #region Get Public Key
 
-        internal static ECPublicKeyParameters getPublicKey(CngKey key)
+        public static ECPublicKeyParameters getPublicKey(CngKey key)
         {
-            // TODO -make this work for ECDH as well
-
-            byte[] publicKey = key.Export(CngKeyBlobFormat.EccPublicBlob);
-            var namedCurve = X962NamedCurves.GetByName("prime256v1");
-
-            BigInteger x;
-            BigInteger y;
-
-            Rfc4050KeyFormatter.UnpackEccPublicBlob(publicKey, out x, out y);
-
-            byte[] q = new byte[65];
-            q[0] = Convert.ToByte(4);           // uncompressed
-            x.ToByteArray().CopyTo(q, 1);
-            y.ToByteArray().CopyTo(q, 32);
-
-            return new ECPublicKeyParameters("ECDSA",
-                                             namedCurve.Curve.DecodePoint(q),           // Q
-                                             X962NamedCurves.GetOid("prime256v1"));
+            return EccKeyBlob.UnpackEccPublicBlob(key.Export(CngKeyBlobFormat.EccPublicBlob));
         }
         
         #endregion
@@ -108,17 +94,20 @@ namespace OSCA.Crypto.CNG
 
         #region Get CngKey reference
 
-        internal static CngKey getKeyRef(string name)
+        public static CngKey getKeyRef(string name)
         {
-            return CngKey.Open(name);
+            // Normalise the name
+            string _name = name.Replace(' ', '_');
+
+            return CngKey.Open(_name);
         }
 
         #endregion
 
 
         #region Export as PKCS#12
-
-        internal static void ExportToP12(CspParameters cspParam, X509Certificate cert, string outputFile, string password, string name)
+       
+        public static void ExportToP12(CngKey key, X509Certificate cert, string outputFile, string password, string name)
         {
             // Normalise the name
             string nName = name.Replace(' ', '_');
@@ -130,36 +119,21 @@ namespace OSCA.Crypto.CNG
             Pkcs12StoreBuilder p12 = new Pkcs12StoreBuilder();
             Pkcs12Store pkcs = p12.Build();
 
-            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(cspParam))
-            {
-                if (!rsa.CspKeyContainerInfo.Exportable)
-                    throw new CryptoException("Private key not exportable");
+            byte[] privateKey = key.Export(CngKeyBlobFormat.EccPrivateBlob);
 
-                pkcs.SetKeyEntry(nName, 
-                    new AsymmetricKeyEntry(DotNetUtilities.GetRsaKeyPair(rsa).Private), 
+            ECPrivateKeyParameters privateParams = EccKeyBlob.UnpackEccPrivateBlob(privateKey);
+
+            pkcs.SetKeyEntry(nName, 
+                    new AsymmetricKeyEntry(privateParams), 
                     new X509CertificateEntry[] { new X509CertificateEntry(cert) });
-            }
+
 
             Stream stream = new FileStream(outputFile, FileMode.Create);
             pkcs.Save(stream, password.ToCharArray(), random);
             stream.Close();
         }
+        
 
-        /*
-        internal static byte[] ExportToP12(CspParameters cspParam, X509Certificate cert, string password)
-        {
-            Sys.X509Certificate2 sysCert = new Sys.X509Certificate2(cert.GetEncoded()); ;
-
-            Sys.X509Store store = new Sys.X509Store(Sys.StoreLocation.CurrentUser);
-            store.Open(Sys.OpenFlags.ReadWrite);
-            store.Add(sysCert);
-
-            sysCert = store.Certificates[0];
-
-            // Export the certificate including the private key.
-            return sysCert.Export(Sys.X509ContentType.Pkcs12, password);
-        }
-        */
         #endregion
 
         #region Import from PKCS#12

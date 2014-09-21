@@ -10,13 +10,14 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using System.Numerics;
+//using System.Numerics;
 using System.Xml;
 using System.Xml.XPath;
 using System.Text;
-using System.Diagnostics.Contracts;
+//using System.Diagnostics.Contracts;
 //using Microsoft.Win32.SafeHandles;
-using System.Security.Cryptography; 
+using System.Security.Cryptography;
+using Org.BouncyCastle.Math; 
 
 namespace OSCA.Crypto.CNG
 {
@@ -39,6 +40,7 @@ namespace OSCA.Crypto.CNG
     ///             </PublicKey>
     ///         </ECDSAKeyValue>
     /// </summary>
+    /// <remarks>Backported to .Net 3.5 because of compatibility issues</remarks>
     internal static class Rfc4050KeyFormatter {
         private const string DomainParametersRoot = "DomainParameters";
         private const string ECDHRoot = "ECDHKeyValue";
@@ -64,8 +66,8 @@ namespace OSCA.Crypto.CNG
         ///     Restore a key from XML
         /// </summary>
         internal static CngKey FromXml(string xml) {
-            Contract.Requires(xml != null);
-            Contract.Ensures(Contract.Result<CngKey>() != null);
+            //Contract.Requires(xml != null);
+            //Contract.Ensures(Contract.Result<CngKey>() != null);
  
             // Load the XML into an XPathNavigator to access sub elements
             using (TextReader textReader = new StringReader(xml))
@@ -104,8 +106,8 @@ namespace OSCA.Crypto.CNG
         /// </summary>
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "The parameters to the exception are in the correct order")]
         private static int GetKeySize(string urn) {
-            Contract.Requires(!String.IsNullOrEmpty(urn));
-            Contract.Ensures(Contract.Result<int>() > 0);
+            //Contract.Requires(!String.IsNullOrEmpty(urn));
+            //Contract.Ensures(Contract.Result<int>() > 0);
  
             switch (urn) {
                 case Prime256CurveUrn:
@@ -127,7 +129,7 @@ namespace OSCA.Crypto.CNG
         ///     Get the OID which represents an elliptic curve
         /// </summary>
         private static string GetCurveUrn(CngAlgorithm algorithm) {
-            Contract.Requires(algorithm != null);
+            //Contract.Requires(algorithm != null);
  
             if (algorithm == CngAlgorithm.ECDsaP256 || algorithm == CngAlgorithm.ECDiffieHellmanP256) {
                 return Prime256CurveUrn;
@@ -148,8 +150,8 @@ namespace OSCA.Crypto.CNG
         ///     Determine which ECC algorithm the key refers to
         /// </summary>
         private static CngAlgorithm ReadAlgorithm(XPathNavigator navigator) {
-            Contract.Requires(navigator != null);
-            Contract.Ensures(Contract.Result<CngAlgorithm>() != null);
+            //Contract.Requires(navigator != null);
+            //Contract.Ensures(Contract.Result<CngAlgorithm>() != null);
  
             if (navigator.NamespaceURI != Namespace) {
                 throw new ArgumentException("Cryptography_UnexpectedXmlNamespace",
@@ -233,7 +235,7 @@ namespace OSCA.Crypto.CNG
         ///     Read the x and y components of the public key
         /// </summary>
         private static void ReadPublicKey(XPathNavigator navigator, out BigInteger x, out BigInteger y) {
-            Contract.Requires(navigator != null);
+            //Contract.Requires(navigator != null);
  
             if (navigator.NamespaceURI != Namespace) {
                 throw new ArgumentException("Cryptography_UnexpectedXmlNamespace",
@@ -258,8 +260,9 @@ namespace OSCA.Crypto.CNG
                 throw new ArgumentException("Cryptography_MissingPublicKey");
                 //throw new ArgumentException(SR.GetString(SR.Cryptography_MissingPublicKey));
             }
- 
-            x = BigInteger.Parse(navigator.Value, CultureInfo.InvariantCulture);
+
+            //x = BigInteger.Parse(navigator.Value, CultureInfo.InvariantCulture);
+            x = new BigInteger(navigator.Value);
             navigator.MoveToParent();
  
             // Then the y parameter
@@ -272,15 +275,16 @@ namespace OSCA.Crypto.CNG
                 //throw new ArgumentException(SR.GetString(SR.Cryptography_MissingPublicKey));
             }
  
-            y = BigInteger.Parse(navigator.Value, CultureInfo.InvariantCulture);
+            //y = BigInteger.Parse(navigator.Value, CultureInfo.InvariantCulture);
+            y = new BigInteger(navigator.Value);
         }
  
         /// <summary>
         ///     Serialize out information about the elliptic curve
         /// </summary>
         private static void WriteDomainParameters(XmlWriter writer, CngKey key) {
-            Contract.Requires(writer != null);
-            Contract.Requires(key != null && (key.AlgorithmGroup == CngAlgorithmGroup.ECDsa || key.AlgorithmGroup == CngAlgorithmGroup.ECDiffieHellman));
+            //Contract.Requires(writer != null);
+            //Contract.Requires(key != null && (key.AlgorithmGroup == CngAlgorithmGroup.ECDsa || key.AlgorithmGroup == CngAlgorithmGroup.ECDiffieHellman));
  
             writer.WriteStartElement(DomainParametersRoot);
  
@@ -293,8 +297,8 @@ namespace OSCA.Crypto.CNG
         }
  
         private static void WritePublicKeyValue(XmlWriter writer, CngKey key) {
-            Contract.Requires(writer != null);
-            Contract.Requires(key != null && (key.AlgorithmGroup == CngAlgorithmGroup.ECDsa || key.AlgorithmGroup == CngAlgorithmGroup.ECDiffieHellman));
+            //Contract.Requires(writer != null);
+            //Contract.Requires(key != null && (key.AlgorithmGroup == CngAlgorithmGroup.ECDsa || key.AlgorithmGroup == CngAlgorithmGroup.ECDiffieHellman));
  
             writer.WriteStartElement(PublicKeyRoot);
  
@@ -304,12 +308,14 @@ namespace OSCA.Crypto.CNG
             UnpackEccPublicBlob(exportedKey, out x, out y);
  
             writer.WriteStartElement(XElement);
-            writer.WriteAttributeString(ValueAttribute, x.ToString("R", CultureInfo.InvariantCulture));
+            //writer.WriteAttributeString(ValueAttribute, x.ToString("R", CultureInfo.InvariantCulture));
+            writer.WriteAttributeString(ValueAttribute, x.ToString());
             writer.WriteAttributeString(XsiNamespacePrefix, XsiTypeAttribute, XsiNamespace, XsiTypeAttributeValue);
             writer.WriteEndElement();   // </X>
  
             writer.WriteStartElement(YElement);
-            writer.WriteAttributeString(ValueAttribute, y.ToString("R", CultureInfo.InvariantCulture));
+            //writer.WriteAttributeString(ValueAttribute, y.ToString("R", CultureInfo.InvariantCulture));
+            writer.WriteAttributeString(ValueAttribute, y.ToString());
             writer.WriteAttributeString(XsiNamespacePrefix, XsiTypeAttribute, XsiNamespace, XsiTypeAttributeValue);
             writer.WriteEndElement();   // </Y>
  
@@ -320,8 +326,8 @@ namespace OSCA.Crypto.CNG
         ///     Convert a key to XML
         /// </summary>
         internal static string ToXml(CngKey key) {
-            Contract.Requires(key != null && (key.AlgorithmGroup == CngAlgorithmGroup.ECDsa || key.AlgorithmGroup == CngAlgorithmGroup.ECDiffieHellman));
-            Contract.Ensures(Contract.Result<String>() != null);
+            //Contract.Requires(key != null && (key.AlgorithmGroup == CngAlgorithmGroup.ECDsa || key.AlgorithmGroup == CngAlgorithmGroup.ECDiffieHellman));
+            //Contract.Ensures(Contract.Result<String>() != null);
  
             StringBuilder keyXml = new StringBuilder();
  
@@ -354,7 +360,7 @@ namespace OSCA.Crypto.CNG
         /// </summary>
         internal static void UnpackEccPublicBlob(byte[] blob, out BigInteger x, out BigInteger y)
         {
-            Contract.Requires(blob != null && blob.Length > 2 * sizeof(int));
+            //Contract.Requires(blob != null && blob.Length > 2 * sizeof(int));
 
             //
             // See code:System.Security.Cryptography.NCryptNative#ECCPublicBlobFormat  for details about the
@@ -378,8 +384,8 @@ namespace OSCA.Crypto.CNG
         /// </summary>
         private static byte[] ReverseBytes(byte[] buffer)
         {
-            Contract.Requires(buffer != null);
-            Contract.Ensures(Contract.Result<byte[]>() != null && Contract.Result<byte[]>().Length == buffer.Length);
+            //Contract.Requires(buffer != null);
+            //Contract.Ensures(Contract.Result<byte[]>() != null && Contract.Result<byte[]>().Length == buffer.Length);
             return ReverseBytes(buffer, 0, buffer.Length, false);
         }
 
@@ -393,12 +399,12 @@ namespace OSCA.Crypto.CNG
 
         private static byte[] ReverseBytes(byte[] buffer, int offset, int count, bool padWithZeroByte)
         {
-            Contract.Requires(buffer != null);
-            Contract.Requires(offset >= 0 && offset < buffer.Length);
-            Contract.Requires(count >= 0 && buffer.Length - count >= offset);
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-            Contract.Ensures(Contract.Result<byte[]>().Length == (padWithZeroByte ? count + 1 : count));
-            Contract.Ensures(padWithZeroByte ? Contract.Result<byte[]>()[count] == 0 : true);
+            //Contract.Requires(buffer != null);
+            //Contract.Requires(offset >= 0 && offset < buffer.Length);
+            //Contract.Requires(count >= 0 && buffer.Length - count >= offset);
+            //Contract.Ensures(Contract.Result<byte[]>() != null);
+            //Contract.Ensures(Contract.Result<byte[]>().Length == (padWithZeroByte ? count + 1 : count));
+            //Contract.Ensures(padWithZeroByte ? Contract.Result<byte[]>()[count] == 0 : true);
 
             byte[] reversed;
             if (padWithZeroByte)
@@ -424,8 +430,8 @@ namespace OSCA.Crypto.CNG
         /// </summary>
         internal static byte[] BuildEccPublicBlob(string algorithm, BigInteger x, BigInteger y)
         {
-            Contract.Requires(!String.IsNullOrEmpty(algorithm));
-            Contract.Ensures(Contract.Result<byte[]>() != null);
+            //Contract.Requires(!String.IsNullOrEmpty(algorithm));
+            //Contract.Ensures(Contract.Result<byte[]>() != null);
 
             //
             // #ECCPublicBlobFormat
@@ -476,7 +482,7 @@ namespace OSCA.Crypto.CNG
                                                    out KeyBlobMagicNumber algorithmMagic,
                                                    out int keySize)
         {
-            Contract.Requires(!String.IsNullOrEmpty(algorithm));
+            //Contract.Requires(!String.IsNullOrEmpty(algorithm));
 
             switch (algorithm)
             {
@@ -536,9 +542,9 @@ namespace OSCA.Crypto.CNG
         /// </summary>
         private static byte[] FillKeyParameter(byte[] key, int keySize)
         {
-            Contract.Requires(key != null);
-            Contract.Requires(keySize > 0);
-            Contract.Ensures(Contract.Result<byte[]>() != null && Contract.Result<byte[]>().Length >= keySize / 8);
+            //Contract.Requires(key != null);
+            //Contract.Requires(keySize > 0);
+            //Contract.Ensures(Contract.Result<byte[]>() != null && Contract.Result<byte[]>().Length >= keySize / 8);
 
             int bytesRequired = (keySize / 8) + (keySize % 8 == 0 ? 0 : 1);
             if (key.Length == bytesRequired)

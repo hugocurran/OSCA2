@@ -26,7 +26,7 @@ namespace OSCA.Crypto.CNG
 
             try
             {
-                signature = CngSigner.Sign(tbsCrl.GetDerEncoded(), key);
+                signature = CngSigner.Sign(tbsCrl.GetDerEncoded(), key, CngAlgorithm.Sha256);
             }
             catch (IOException e)
             {

@@ -117,6 +117,8 @@ namespace OSCA.Offline
                     return CA_Type.sysCA;
                 case "dhTA":
                     return CA_Type.dhTA;
+                case "cngCA":
+                    return CA_Type.cngCA;
                 default:
                     throw new ArgumentOutOfRangeException("Unexpected CA type: " + type);
             }

@@ -57,7 +57,9 @@ namespace OSCA.Crypto.CNG
 
             try
             {
-                signature = CngSigner.Sign(cert, key);
+                //AlgorithmIdentifier sigAlg = tbsCert.Signature;
+                //sigAlg.ObjectID
+                signature = CngSigner.Sign(cert, key, CngAlgorithm.Sha256);
             }
             catch (Exception e)
             {

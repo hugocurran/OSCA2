@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OSCA</RootNamespace>
     <AssemblyName>OSCA</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -107,6 +107,7 @@
     <Compile Include="Crypto\CNG\CngSigner.cs" />
     <Compile Include="Crypto\CNG\CngKeyManager.cs" />
     <Compile Include="Crypto\CNG\CngV3CertGen.cs" />
+    <Compile Include="Crypto\CNG\EccKeyBlob.cs" />
     <Compile Include="Crypto\CNG\Rfc4050KeyFormatter.cs" />
     <Compile Include="Crypto\IbcCertGen.cs" />
     <Compile Include="Crypto\IcngCertGen.cs" />

@@ -32,6 +32,7 @@ using Org.BouncyCastle.X509.Extension;
 using OSCA.Crypto;
 using OSCA.Log;
 using System.Xml;
+using OSCA.Crypto.CNG;
 
 
 namespace OSCA.Offline
@@ -63,7 +64,8 @@ namespace OSCA.Offline
         // Key material
         private static AsymmetricCipherKeyPair keyPair = null;
         private static AsymmetricKeyParameter publicKey = null;
-        private static CspParameters cspParam = null;
+        private static CspParameters privateKeyCapi = null;
+        private static CngKey privateKeyCng = null;
         //private static X509Certificate caCert = null;
         private static Logger eventLog = null;
 
@@ -106,19 +108,37 @@ namespace OSCA.Offline
             //OLD method
             if (Config.FIPS140)
             {
-                cspParam = SysKeyManager.Create(Config.pkSize, Config.pkAlgo, Config.name);
-                publicKey = SysKeyManager.getPublicKey(cspParam, Config.pkAlgo);
-                if (Config.version == X509ver.V1)
-                    certGen = new SysV1CertGen();
-                else
-                    certGen = new SysV3CertGen();
+                switch (Config.caType)
+                {
+                    case CA_Type.sysCA:
+                    case CA_Type.dhTA:
+                        privateKeyCapi = SysKeyManager.Create(Config.pkSize, Config.pkAlgo, Config.name);
+                        publicKey = SysKeyManager.getPublicKey(privateKeyCapi, Config.pkAlgo);
+                        if (Config.version == X509ver.V1)
+                            certGen = new SysV1CertGen();
+                        else
+                            certGen = new SysV3CertGen();
+                    break;
+
+                    case CA_Type.cngCA:
+                        privateKeyCng = CngKeyManager.Create(CngAlgorithm.ECDsaP256, Config.name);
+                        publicKey = CngKeyManager.getPublicKey(privateKeyCng);
+                        //if (Config.version == X509ver.V1)
+                        //    certGen = new CngV1CertGen();
+                        //else
+                            certGen = new CngV3CertGen();
+                    break;
+
+                    default:
+                        throw new InvalidParameterException("CA Type not compatible with Fips140 flag: " + Config.caType.ToString());
+                }
+
             }
             else
             {
                 keyPair = BcKeyManager.Create(Config.pkSize, Config.pkAlgo);
                 // Create a system CspParameters entry for use by XmlSigner
-                cspParam = SysKeyManager.LoadCsp(keyPair.Private);
-
+                privateKeyCapi = SysKeyManager.LoadCsp(keyPair.Private);
                 publicKey = keyPair.Public;
                 if (Config.version == X509ver.V1)
                     certGen = new BcV1CertGen();
@@ -127,10 +147,10 @@ namespace OSCA.Offline
             }
 
             //NEW method
-            if ((Config.FIPS140) && (Config.CSPNum > 0))    // System crypto
-            {
-                cspParam = SysKeyManager.Create(Config.pkSize, Config.CSPName, Config.CSPNum, Config.name);
-            }
+            //if ((Config.FIPS140) && (Config.CSPNum > 0))    // System crypto
+            //{
+            //    cspParam = SysKeyManager.Create(Config.pkSize, Config.CSPName, Config.CSPNum, Config.name);
+            //}
             
             // V1 and V3 fields
             certGen.SetSerialNumber(serialNumber);
@@ -152,7 +172,20 @@ namespace OSCA.Offline
 
             X509Certificate caCert;
             if (Config.FIPS140)
-                caCert = ((IsysCertGen)certGen).Generate(cspParam);
+            {
+                switch (Config.caType)
+                {
+                    case CA_Type.sysCA:
+                    case CA_Type.dhTA:
+                        caCert = ((IsysCertGen)certGen).Generate(privateKeyCapi);
+                        break;
+                    case CA_Type.cngCA:
+                        caCert = ((IcngCertGen)certGen).Generate(privateKeyCng);
+                        break;
+                    default:
+                        throw new InvalidParameterException("CA Type not compatible with Fips140 flag: " + Config.caType.ToString());
+                }
+            }
             else
                 caCert = ((IbcCertGen)certGen).Generate(keyPair.Private);
 
@@ -175,11 +208,11 @@ namespace OSCA.Offline
              }   
          
             // Create CA database
-            string dbFile = Database.CreateDB(Config, caCert, cspParam);
+            string dbFile = Database.CreateDB(Config, caCert, privateKeyCapi);
 
             // Insert Root CA certificate
             byte[] dummy = new byte[0];
-            Database.AddCertificate(caCert, dummy, "rootCA", dbFile, caCert, cspParam);
+            Database.AddCertificate(caCert, dummy, "rootCA", dbFile, caCert, privateKeyCapi);
 
             return configFile; 
         }
@@ -208,24 +241,24 @@ namespace OSCA.Offline
 
             if (Config.FIPS140)
             {
-                cspParam = SysKeyManager.Create(Config.pkSize, Config.pkAlgo, Config.name);
+                privateKeyCapi = SysKeyManager.Create(Config.pkSize, Config.pkAlgo, Config.name);
 
                 // PKCS#10 Request
                 p10 = new Pkcs10CertificationRequestDelaySigned(
                                                 Config.sigAlgo,
                                                 Config.DN,
-                                                SysKeyManager.getPublicKey(cspParam, Config.pkAlgo),
+                                                SysKeyManager.getPublicKey(privateKeyCapi, Config.pkAlgo),
                                                 null);
                 // Signature
                 byte[] buffer = ((Pkcs10CertificationRequestDelaySigned)p10).GetDataToSign();
-                byte[] signature = SysSigner.Sign(buffer, cspParam, Config.sigAlgo);
+                byte[] signature = SysSigner.Sign(buffer, privateKeyCapi, Config.sigAlgo);
                 ((Pkcs10CertificationRequestDelaySigned)p10).SignRequest(signature);              
             }
             else
             {
                 keyPair = BcKeyManager.Create(Config.pkSize, Config.pkAlgo);
                 // Create a system CspParameters entry for use by XmlSigner
-                cspParam = SysKeyManager.LoadCsp(keyPair.Private);
+                privateKeyCapi = SysKeyManager.LoadCsp(keyPair.Private);
 
                 // PKCS#10 Request
                 p10 = new Pkcs10CertificationRequest(
@@ -260,7 +293,7 @@ namespace OSCA.Offline
                 LogEvent.WriteEvent(eventLog, LogEvent.EventType.CreateCA, "Root CA (BC) Created: " + configFile);
             }
             // Create CA database
-            Database.CreateDB(Config, cert, cspParam);
+            Database.CreateDB(Config, cert, privateKeyCapi);
 
             return configFile;
         }
@@ -330,10 +363,10 @@ namespace OSCA.Offline
             ca.Element("rqstPending").ReplaceWith(new XElement("caCert", Utility.cert64(Certificate)));
 
             // Sign and save the config file
-            XmlSigning.SignXml(config, ConfigFile, Certificate, cspParam);
+            XmlSigning.SignXml(config, ConfigFile, Certificate, privateKeyCapi);
 
             // Create CA database
-            Database.CreateDB(ConfigFile, Certificate, cspParam);
+            Database.CreateDB(ConfigFile, Certificate, privateKeyCapi);
         }
 
         #endregion
@@ -440,10 +473,10 @@ namespace OSCA.Offline
             string configFile = config.location + "\\CAConfig.xml";
             if (caCert != null)
             {
-                XmlSigning.SignXml(conf, configFile, caCert, cspParam);
+                XmlSigning.SignXml(conf, configFile, caCert, privateKeyCapi);
                 // Setup the log file
-                LogFile.createLogFile(logFile, version, caCert, cspParam);
-                eventLog = new Logger(logFile, caCert, cspParam);
+                LogFile.createLogFile(logFile, version, caCert, privateKeyCapi);
+                eventLog = new Logger(logFile, caCert, privateKeyCapi);
             }
             else
             {
