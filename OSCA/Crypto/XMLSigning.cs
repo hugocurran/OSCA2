@@ -87,7 +87,7 @@ namespace OSCA.Crypto
                 doc.DocumentElement.RemoveChild(xmlNode);
             }
 
-            if (cspParam != null)
+            if (cspParam != null)   // RSA/DSA signing key
             {
 
                 // Create a SignedXml object.

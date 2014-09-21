@@ -137,8 +137,14 @@ namespace OSCA.Offline
             else
             {
                 keyPair = BcKeyManager.Create(Config.pkSize, Config.pkAlgo);
+
                 // Create a system CspParameters entry for use by XmlSigner
-                privateKeyCapi = SysKeyManager.LoadCsp(keyPair.Private);
+                // Only for RSA and DSA currently until EC XML signing is sorted
+                if (!Config.pkAlgo.Contains("EC"))
+                    privateKeyCapi = SysKeyManager.LoadCsp(keyPair.Private);
+                else
+                    privateKeyCapi = null;
+
                 publicKey = keyPair.Public;
                 if (Config.version == X509ver.V1)
                     certGen = new BcV1CertGen();
@@ -189,6 +195,8 @@ namespace OSCA.Offline
             else
                 caCert = ((IbcCertGen)certGen).Generate(keyPair.Private);
 
+            caCert.Verify(caCert.GetPublicKey());
+
             string configFile;
             if (Config.FIPS140)
             {
@@ -203,7 +211,7 @@ namespace OSCA.Offline
                 string caKey = Convert.ToBase64String(stream.ToArray());
 
                 // Create the CA Config file
-                configFile = createFinalCAConfig(Config, serialNumber, null, caKey);
+                configFile = createFinalCAConfig(Config, serialNumber, caCert, caKey);
                 LogEvent.WriteEvent(eventLog, LogEvent.EventType.CreateCA, "Root CA (BC) Created: " + configFile);
              }   
          
